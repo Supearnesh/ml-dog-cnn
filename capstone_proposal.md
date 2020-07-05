@@ -20,7 +20,7 @@ July 4th, 2020
 ### Domain Background
 
 
-Neural networks are excellent tools when trying to solve image classification problems. Image classification can span a multitude of areas, from multi-class classification problems like determining the make and model of a car to binary classification problems like identifying fire hydrants in images. One such image classification problem is identifying dog breeds. This is a problem at which a lot of humans, like myself, are not particularly adept, but a neural network can be trained to recognize different breeds in a matter of minutes given a sufficient training set and the necessary infrastructure.
+Neural networks are excellent tools when trying to solve image classification problems. Image classification can span a multitude of areas, from multi-class classification problems like determining the make and model of a car to binary classification problems like identifying fire hydrants in images. One such image classification problem is identifying dog breeds. This is a problem at which a lot of humans, such as myself, are not particularly adept, but a neural network can be trained to recognize different breeds in a matter of minutes given a sufficient training set and the necessary infrastructure.
 
 
 For this project, a [Convolutional Neural Network (CNN)](https://en.wikipedia.org/wiki/Convolutional_neural_network) will be trained to identify images of dogs and determine the appropriate breed of the canine. A CNN looks at images through a filter that convolves across the receptive field, similar to how humans read sentences one word at a time.
@@ -76,6 +76,12 @@ Using a test set from the `dogImages` dataset, it is possible to measure accurac
 
 
 <img src='img/confusion_matrix.png' width=50% />
+
+
+Accuracy is a decent measure for evaluation of machine learning models, but a far better approach is to evaluate the precision and recall of a model. Accuracy, alone, is not a very helpful metric for understanding what changed between iterations of models. For instance, if a model has very high precision but low recall, then it might be necessary to retrain the model on more data; on the other hand, if a model has good recall but lower precision, then it might be necessary to tune the features being used. Accuracy might be identical across both of the previous scenarios and does not lend very much information for improving model performance. A graphic below explains the calculation for both precision and recall.
+
+
+<img src='img/precision_recall.png' width=50% />
 
 
 
