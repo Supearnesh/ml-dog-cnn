@@ -115,4 +115,5 @@ The `face_detector` function will leverage [OpenCV's implementation of Haar feat
 
 To better describe the function of the CNN in this project, the illustration below shows an example of how CNNs handle image classification. The convolutional and max-pooling layers extract features from a provided input image. Those features are then used to perform non-linear transformations in the fully-connected layer and produce a classification result.
 
+
 <img src='img/cnn-schema.jpg' width=50% />
