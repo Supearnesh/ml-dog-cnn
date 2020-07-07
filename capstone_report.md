@@ -15,7 +15,19 @@ July 2020
 ## I. Definition
 _(approx. 1-2 pages)_
 
+
+
+
 ### Project Overview
+
+
+It is often said that a dog is a man's best friend, and it's true - dogs make wonderful companions. Dogs are also particularly diverse creatures, showing considerable variation between different breeds. On an evening walk through a given neighborhood, one may come across a variety of different breeds of dogs. There is so much variation between dog breeds that it is often 
+
+<img src='img/breed_similarity_01.png' width=50% />
+
+<img src='img/breed_similarity_02.png' width=50% />
+
+
 In this section, look to provide a high-level overview of the project in layman’s terms. Questions to ask yourself when writing this section:
 - _Has an overview of the project been provided, such as the problem domain, project origin, and related datasets or input data?_
 - _Has enough background information been given so that an uninformed reader would understand the problem domain and following problem statement?_
