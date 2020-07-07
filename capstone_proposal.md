@@ -6,8 +6,8 @@
 ## Capstone Proposal
 
 
-Arnesh Sahay  
-July 4th, 2020
+Arnesh Sahay
+June 2020
 
 
 
