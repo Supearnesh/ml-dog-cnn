@@ -77,13 +77,13 @@ The [pre-trained VGG-16 model](https://pytorch.org/docs/master/torchvision/model
 Using a test set from the `dogImages` dataset, it is possible to measure accuracy by counting `true positives` identified by the model and weighing them against the total number of predictions made. This calculation is outlined below.
 
 
-<img src='https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/img/confusion_matrix.png' width=35% />
+<img src='img/confusion_matrix.png' width=35% />
 
 
 Accuracy is a decent measure for evaluation of machine learning models, but a far better approach is to evaluate the precision and recall of a model. Accuracy, alone, is not a very helpful metric for understanding what changed between iterations of models. For instance, if a model has very high precision but low recall, then it might be necessary to retrain the model on more data; on the other hand, if a model has good recall but lower precision, then it might be necessary to tune the features being used. Accuracy might be identical across both of the previous scenarios and does not lend very much information for improving model performance. A graphic below explains the calculation for both precision and recall.
 
 
-<img src='https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/img/precision_recall.png' width=50% />
+<img src='img/precision_recall.png' width=50% />
 
 
 
@@ -118,4 +118,4 @@ The `face_detector` function will leverage [OpenCV's implementation of Haar feat
 To better describe the function of the CNN in this project, the illustration below shows an example of how CNNs handle image classification. The convolutional and max-pooling layers extract features from a provided input image. Those features are then used to perform non-linear transformations in the fully-connected layer and produce a classification result.
 
 
-<img src='https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/img/cnn-schema.jpg' width=75% />
+<img src='img/cnn-schema.jpg' width=75% />
