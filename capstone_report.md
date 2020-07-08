@@ -13,7 +13,6 @@ July 2020
 
 
 ## I. Definition
-_(approx. 1-2 pages)_
 
 
 
@@ -21,49 +20,58 @@ _(approx. 1-2 pages)_
 ### Project Overview
 
 
-Over the course of the last 30,000 years, humans have domesticated dogs and made them into truly wonderful companions. Dogs are very diverse animals, showing considerable variation between different breeds. On an evening walk through a given neighborhood, one may encounter several dogs that bear no semblance to each other. Other breeds of dogs are so similar that it is difficult for the untrained eye to tell them apart.
+Over the course of the last 30,000 years, humans have domesticated dogs and turned them into truly wonderful companions. Dogs are very diverse animals, showing considerable variation between different breeds. On an evening walk through a given neighborhood, one may encounter several dogs that bear no semblance to each other. Other breeds of dogs are so similar that it is difficult for the untrained eye to tell them apart. Included below are a few different images, see if it would be possible for the average person to determine the the breed of these dogs.
 
 
-<img src='img/breed_colors.png' width=50% />
+![Labrador Retrievers are recognized as having three possible coat colors: yellow, chocolate and black.](https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/img/breed_colors.png)
 
 
-Labrador Retrievers are recognized as having three possible coat colors: yellow, chocolate and black. The legitimacy of a fourth color, silver, is widely debated amongst breeders.
-
-
-<img src='img/silver_labrador.jpg' width=50% />
+![The legitimacy of a fourth color, silver, is widely contested amongst breeders.](https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/img/silver_labrador.jpg)
 
 
 > LTHQ et al. [Silver Labrador Retriever Facts And Controversy](https://www.labradortraininghq.com/labrador-breed-information/silver-labrador-retriever). In _Labrador Training HQ_, 2020.
 
 
-<img src='img/breed_similarity_01.png' width=50% />
+![It is not easy to distinguish between the Brittany (left) and the Welsh Springer Spaniel (right) due to similarities in the patterned fur around their eyes.](https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/img/breed_similarity_01.png)
 
 
-It is not easy to distinguish between a Brittany and Welsh Springer Spaniel due to the similarities in their fur patterns around their eyes.
+![Another pair of dogs, the Curly-coated Retriever (left) and the American Water Spaniel (right), that are difficult to tell apart from the texture of their coats.](https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/img/breed_similarity_02.png)
 
 
-<img src='img/breed_similarity_02.png' width=50% />
-
-
-The similarities between the Curly-coated Retriever and American Water Spaniel make them another pair of species that are difficult to tell apart. It may take months or years for a person to learn all of the physical attributes and unique features of the 100+ different dog breeds to be able to effectively identify them with a high degree of confidence. It would be interesting to train a machine learning model to accomplish the same task in a fraction of that time.
-
-
-The goal of this project is to use a [Convolutional Neural Network (CNN)](https://en.wikipedia.org/wiki/Convolutional_neural_network) to train a dog breed classifier across 133 breeds of dogs, using the 
+It may take many weeks or months for a person to learn enough about the physical attributes and unique features of different dog breeds to effectively identify them with a high degree of confidence. It would be interesting to see if a machine learning model can be trained to accomplish the same task in a matter of a few hours. The goal of this project is to use a [Convolutional Neural Network (CNN)](https://en.wikipedia.org/wiki/Convolutional_neural_network) to train a dog breed classifier across 133 breeds of dogs, using the [dogImages](https://s3-us-west-1.amazonaws.com/udacity-aind/dog-project/dogImages.zip) dataset, which consists of 8,351 total images split into 133 different categories by dog breed.
 
 
 
-
-In this section, look to provide a high-level overview of the project in layman’s terms. Questions to ask yourself when writing this section:
-- _Has an overview of the project been provided, such as the problem domain, project origin, and related datasets or input data?_
-- _Has enough background information been given so that an uninformed reader would understand the problem domain and following problem statement?_
 
 ### Problem Statement
+
+
+
+
+There are two components to the model in this project. The first is a binary classification task that will consist of determining whether an image is of a human or a dog. The second is a multi-class classification task - if the image is of a dog, the model will need to identify the breed to which it belongs; otherwise, if the image is of a human, the model will need to determine the breed that the human most closely resembles. The binary classification step will detect if a dog is present in the image and output `true` if a dog is detected or `false` otherwise. Afterwards, multi-class classification will match the image to a particular breed out of 133 possibilities.
+
+Given an image of a dog or human, the CNN should be able to output the breed of the dog or the breed that matches most closely the human likeness. In order to measure the performance of the solution, it will make the most sense to provide the model with a series of dog images and measure its accuracy. An accuracy of greater than 60% should be acceptable for the purposes of this project.
+
+
 In this section, you will want to clearly define the problem that you are trying to solve, including the strategy (outline of tasks) you will use to achieve the desired solution. You should also thoroughly discuss what the intended solution will be for this problem. Questions to ask yourself when writing this section:
 - _Is the problem statement clearly defined? Will the reader understand what you are expecting to solve?_
 - _Have you thoroughly discussed how you will attempt to solve the problem?_
 - _Is an anticipated solution clearly defined? Will the reader understand what results you are looking for?_
 
 ### Metrics
+
+Using a test set from the `dogImages` dataset, it is possible to measure accuracy by counting `true positives` identified by the model and weighing them against the total number of predictions made. This calculation is outlined below.
+
+
+![Confusion Matrix](https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/img/confusion_matrix.png)
+
+
+Accuracy is a decent measure for evaluation of machine learning models, but a far better approach is to evaluate the precision and recall of a model. Accuracy, alone, is not a very helpful metric for understanding what changed between iterations of models. For instance, if a model has very high precision but low recall, then it might be necessary to retrain the model on more data; on the other hand, if a model has good recall but lower precision, then it might be necessary to tune the features being used. Accuracy might be identical across both of the previous scenarios and does not lend very much information for improving model performance. A graphic below explains the calculation for both precision and recall.
+
+
+![Precision Recall](https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/img/precision_recall.png)
+
+
 In this section, you will need to clearly define the metrics or calculations you will use to measure performance of a model or result in your project. These calculations and metrics should be justified based on the characteristics of the problem and problem domain. Questions to ask yourself when writing this section:
 - _Are the metrics you’ve chosen to measure the performance of your models clearly discussed and defined?_
 - _Have you provided reasonable justification for the metrics chosen based on the problem and solution?_
@@ -92,6 +100,9 @@ In this section, you will need to discuss the algorithms and techniques you inte
 - _Is it made clear how the input data or datasets will be handled by the algorithms and techniques chosen?_
 
 ### Benchmark
+
+The [pre-trained VGG-16 model](https://pytorch.org/docs/master/torchvision/models.html) to identify dog breeds can be used as a benchmark model. It currently classifies dog breeds from a test set with an accuracy of roughly 40%, which is below the success criteria defined for this project. The goal of this project is to create a CNN that out-performs this model and delivers an accuracy of greater than 60%.
+
 In this section, you will need to provide a clearly defined benchmark result or threshold for comparing across performances obtained by your solution. The reasoning behind the benchmark (in the case where it is not an established result) should be discussed. Questions to ask yourself when writing this section:
 - _Has some result or value been provided that acts as a benchmark for measuring performance?_
 - _Is it clear how this result or value was obtained (whether by data or by hypothesis)?_
@@ -107,6 +118,39 @@ In this section, all of your preprocessing steps will need to be clearly documen
 - _If no preprocessing is needed, has it been made clear why?_
 
 ### Implementation
+
+The end-to-end functionality of this project will employ a multitude of separate components. Any input would first be run through the `face_detector` and `dog_detector` functions to determine if the image is of a person or dog. Afterwards, the image would be fed into a CNN to determine the appropriate breed to which the image should belong.
+
+
+The machine learning pipeline will include:
+
+
+1. Importing the datasets
+2. Binary classification
+    * a. Detecting humans
+    * b. Detecting dogs
+3. Convolutional Neural Network (CNN)
+    * a. Classifying dog breeds from scratch
+    * b. Classifying dog breeds using transfer learning
+4. Algorithm implementation for images provided as input
+5. Model performance testing
+
+
+The `face_detector` function will leverage [OpenCV's implementation of Haar feature-based cascade classifiers](https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_objdetect/py_face_detection/py_face_detection.html) to detect human faces in images. The `dog_detector` function will utilize [a pre-trained ResNet-50 model](https://ethereon.github.io/netscope/#/gist/db945b393d40bfa26006) to detect dogs in images. The CCN will use transfer learning and extract bottleneck features from one of the following different pre-trained models available in Keras:
+
+
+* VGG-19 bottleneck features
+* ResNet-50 bottleneck features
+* Inception bottleneck features
+* Xception bottleneck features
+
+
+To better describe the function of the CNN in this project, the illustration below shows an example of how CNNs handle image classification. The convolutional and max-pooling layers extract features from a provided input image. Those features are then used to perform non-linear transformations in the fully-connected layer and produce a classification result.
+
+
+![CNN Schema](https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/img/cnn-schema.jpg)
+
+
 In this section, the process for which metrics, algorithms, and techniques that you implemented for the given data will need to be clearly documented. It should be abundantly clear how the implementation was carried out, and discussion should be made regarding any complications that occurred during this process. Questions to ask yourself when writing this section:
 - _Is it made clear how the algorithms and techniques were implemented with the given datasets or input data?_
 - _Were there any complications with the original metrics or techniques that required changing prior to acquiring a solution?_
