@@ -109,10 +109,12 @@ The machine learning pipeline will include:
 
 
 The `face_detector` function will leverage [OpenCV's implementation of Haar feature-based cascade classifiers](https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_objdetect/py_face_detection/py_face_detection.html) to detect human faces in images. The `dog_detector` function will utilize [a pre-trained ResNet-50 model](https://ethereon.github.io/netscope/#/gist/db945b393d40bfa26006) to detect dogs in images. The CCN will use transfer learning and extract bottleneck features from one of the following different pre-trained models available in Keras:
-    * VGG-19 bottleneck features
-    * ResNet-50 bottleneck features
-    * Inception bottleneck features
-    * Xception bottleneck features
+
+
+* VGG-19 bottleneck features
+* ResNet-50 bottleneck features
+* Inception bottleneck features
+* Xception bottleneck features
 
 
 To better describe the function of the CNN in this project, the illustration below shows an example of how CNNs handle image classification. The convolutional and max-pooling layers extract features from a provided input image. Those features are then used to perform non-linear transformations in the fully-connected layer and produce a classification result.
