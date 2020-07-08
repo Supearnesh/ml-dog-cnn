@@ -21,11 +21,36 @@ _(approx. 1-2 pages)_
 ### Project Overview
 
 
-It is often said that a dog is a man's best friend, and it's true - dogs make wonderful companions. Dogs are also particularly diverse creatures, showing considerable variation between different breeds. On an evening walk through a given neighborhood, one may come across a variety of different breeds of dogs. There is so much variation between dog breeds that it is often 
+Over the course of the last 30,000 years, humans have domesticated dogs and made them into truly wonderful companions. Dogs are very diverse animals, showing considerable variation between different breeds. On an evening walk through a given neighborhood, one may encounter several dogs that bear no semblance to each other. Other breeds of dogs are so similar that it is difficult for the untrained eye to tell them apart.
+
+
+<img src='img/breed_colors.png' width=50% />
+
+
+Labrador Retrievers are recognized as having three possible coat colors: yellow, chocolate and black. The legitimacy of a fourth color, silver, is widely debated amongst breeders.
+
+
+<img src='img/silver_labrador.jpg' width=50% />
+
+
+> LTHQ et al. [Silver Labrador Retriever Facts And Controversy](https://www.labradortraininghq.com/labrador-breed-information/silver-labrador-retriever). In _Labrador Training HQ_, 2020.
+
 
 <img src='img/breed_similarity_01.png' width=50% />
 
+
+It is not easy to distinguish between a Brittany and Welsh Springer Spaniel due to the similarities in their fur patterns around their eyes.
+
+
 <img src='img/breed_similarity_02.png' width=50% />
+
+
+The similarities between the Curly-coated Retriever and American Water Spaniel make them another pair of species that are difficult to tell apart. It may take months or years for a person to learn all of the physical attributes and unique features of the 100+ different dog breeds to be able to effectively identify them with a high degree of confidence. It would be interesting to train a machine learning model to accomplish the same task in a fraction of that time.
+
+
+The goal of this project is to use a [Convolutional Neural Network (CNN)](https://en.wikipedia.org/wiki/Convolutional_neural_network) to train a dog breed classifier across 133 breeds of dogs, using the 
+
+
 
 
 In this section, look to provide a high-level overview of the project in layman’s terms. Questions to ask yourself when writing this section:
