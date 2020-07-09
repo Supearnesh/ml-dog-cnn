@@ -90,25 +90,33 @@ _(approx. 2-4 pages)_
 ### Data Exploration
 
 
-There are two datasets for this project to be used for this project - [dogImages](https://s3-us-west-1.amazonaws.com/udacity-aind/dog-project/dogImages.zip), which contains images of dogs categorized by breed, and [lfw](https://s3-us-west-1.amazonaws.com/udacity-aind/dog-project/lfw.zip), which contains images of humans separated into folders by the individual's name. The dog images dataset has 8,351 total images split into 133 breeds, or categories, of dogs. The data is further broken down into 6,680 images for training, 835 images for validation, and 836 images for testing. The human images dataset has 13,233 total images across 5,749 people.
+There are two datasets for this project to be used for this project - [dogImages](https://s3-us-west-1.amazonaws.com/udacity-aind/dog-project/dogImages.zip), which contains images of dogs categorized by breed, and [lfw](https://s3-us-west-1.amazonaws.com/udacity-aind/dog-project/lfw.zip), which contains images of humans separated into folders by the individual's name. The dog images dataset has 8,351 total images split into 133 breeds, or categories, of dogs. The data is further broken down into 6,680 images for training, 835 images for validation, and 836 images for testing. The human images dataset has 13,233 total images across 5,749 people. Below are some examples of images from both datasets.
 
 
-![An image of the Afghan Hound breed](https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/dogImages/test/002.Afghan_hound/Afghan_hound_00125.jpg)
+![An image of the Afghan Hound breed from the `dogImages` dataset](https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/dogImages/test/002.Afghan_hound/Afghan_hound_00125.jpg)
 
 
-![An image of Aaron Eckhart, who also goes by Harvey Dent in some circles](https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/lfw/Aaron_Eckhart/Aaron_Eckhart_0001.jpg)
+![An image of Aaron Eckhart, who also goes by Harvey Dent in some circles, from the `lfw` dataset](https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/lfw/Aaron_Eckhart/Aaron_Eckhart_0001.jpg)
 
 
-In this section, you will be expected to analyze the data you are using for the problem. This data can either be in the form of a dataset (or datasets), input data (or input files), or even an environment. The type of data should be thoroughly described and, if possible, have basic statistics and information presented (such as discussion of input features or defining characteristics about the input or environment). Any abnormalities or interesting qualities about the data that may need to be addressed have been identified (such as features that need to be transformed or the possibility of outliers). Questions to ask yourself when writing this section:
-- _If a dataset is present for this problem, have you thoroughly discussed certain features about the dataset? Has a data sample been provided to the reader?_
-- _If a dataset is present for this problem, are statistics about the dataset calculated and reported? Have any relevant results from this calculation been discussed?_
-- _If a dataset is **not** present for this problem, has discussion been made about the input space or input data for your problem?_
-- _Are there any abnormalities or characteristics about the input space or dataset that need to be addressed? (categorical variables, missing values, outliers, etc.)_
+As far as the image resolutions go, the data consists of varying sizes and dimensions. Since the CNN will need to be fed in standardized input, the data will need to be pre-processed prior to using it in our model. The latter sections will cover the specifics of the pre-processing techniques to be used.
 
 
 
 
 ### Exploratory Visualization
+
+
+When training and evaluating the multi-class classifier, it will be important to understand the data distribution in the training, validation, and test sets across all 133 classes to ensure that there are no class imbalances that need to be taken into consideration. To that end, there are three plots below that show the distribution across all 133 classes for the `train`, `valid`, and `test` splits of the `dogImages` dataset.
+
+
+![Data Distribution for the Training Set](https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/img/data_distribution_plot_train.jpg)
+
+
+![Data Distribution for the Validation Set](https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/img/data_distribution_plot_valid.jpg)
+
+
+![Data Distribution for the Test Set](https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/img/data_distribution_plot_test.jpg)
 
 
 In this section, you will need to provide some form of visualization that summarizes or extracts a relevant characteristic or feature about the data. The visualization should adequately support the data being used. Discuss why this visualization was chosen and how it is relevant. Questions to ask yourself when writing this section:
@@ -122,10 +130,10 @@ In this section, you will need to provide some form of visualization that summar
 ### Algorithms and Techniques
 
 
-There are two components to the model in this project. The first is a binary classification task that will consist of determining whether an image is of a human or a dog. The second is a multi-class classification task - if the image is of a dog, the model will need to identify the breed to which it belongs; otherwise, if the image is of a human, the model will need to determine the breed that the human most closely resembles. The binary classification step will detect if a dog is present in the image and output `true` if a dog is detected or `false` otherwise. Afterwards, multi-class classification will match the image to a particular breed out of 133 possibilities.
+There will be a total of three models, as stated earlier. The first model, a `face_detector`  will use [OpenCV's implementation of Haar feature-based cascade classifiers](https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_objdetect/py_face_detection/py_face_detection.html) to determine if a human face is present, returning `true` if a face is present, or `false` if a face is not present in the image. The second model, a `dog_detector` will leverage [a pre-trained VGG-16 model](https://pytorch.org/docs/master/torchvision/models.html) to identify if the images contain a dog, returning `true` if a dog is present, or `false` if a dog is not present. The third model will be a CNN trained using [transfer learning](https://en.wikipedia.org/wiki/Transfer_learning) from [a pre-trained VGG-19 model](https://pytorch.org/docs/master/torchvision/models.html).
 
 
-Given an image of a dog or human, the CNN should be able to output the breed of the dog or the breed that matches most closely the human likeness. In order to measure the performance of the solution, it will make the most sense to provide the model with a series of dog images and measure its accuracy. An accuracy of greater than 60% should be acceptable for the purposes of this project.
+As the focus of this project is on the CNN multi-class classifier, it would be apt to go into a bit more depth on its architecture. As a background on neural networks in general, they typically consist of an input layer and an output layer with some hidden layers in between. At a very high level, the input layer is responsible for taking in data, the hidden layers apply some changes to it, and the output layer yield the result. In the CNN built for this project, the input layer took in a pre-processed 256 x 256 image.
 
 
 In this section, you will need to discuss the algorithms and techniques you intend to use for solving the problem. You should justify the use of each one based on the characteristics of the problem and the problem domain. Questions to ask yourself when writing this section:
@@ -139,12 +147,7 @@ In this section, you will need to discuss the algorithms and techniques you inte
 ### Benchmark
 
 
-The [pre-trained VGG-16 model](https://pytorch.org/docs/master/torchvision/models.html) to identify dog breeds can be used as a benchmark model. It currently classifies dog breeds from a test set with an accuracy of roughly 40%, which is below the success criteria defined for this project. The goal of this project is to create a CNN that out-performs this model and delivers an accuracy of greater than 60%.
-
-
-In this section, you will need to provide a clearly defined benchmark result or threshold for comparing across performances obtained by your solution. The reasoning behind the benchmark (in the case where it is not an established result) should be discussed. Questions to ask yourself when writing this section:
-- _Has some result or value been provided that acts as a benchmark for measuring performance?_
-- _Is it clear how this result or value was obtained (whether by data or by hypothesis)?_
+The [pre-trained VGG-16 model](https://pytorch.org/docs/master/torchvision/models.html) used as the `dog_detector` model can be used as a benchmark model for breed classification since it can also be used to identify dog breeds in images provided as input. The model performs with an accuracy of roughly 40% on a test set of 100 randomly selected images. While this performance is not stellar, it can be used as a benchmark to compare against the CNN. The goal of this project is to create a CNN that out-performs the VGG-16 model and delivers an accuracy rate of greater than 60%.
 
 
 
