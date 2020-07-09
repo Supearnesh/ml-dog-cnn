@@ -90,6 +90,15 @@ _(approx. 2-4 pages)_
 ### Data Exploration
 
 
+There are two datasets for this project to be used for this project - [dogImages](https://s3-us-west-1.amazonaws.com/udacity-aind/dog-project/dogImages.zip), which contains images of dogs categorized by breed, and [lfw](https://s3-us-west-1.amazonaws.com/udacity-aind/dog-project/lfw.zip), which contains images of humans separated into folders by the individual's name. The dog images dataset has 8,351 total images split into 133 breeds, or categories, of dogs. The data is further broken down into 6,680 images for training, 835 images for validation, and 836 images for testing. The human images dataset has 13,233 total images across 5,749 people.
+
+
+![An image of the Afghan Hound breed](https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/dogImages/test/002.Afghan_hound/Afghan_hound_00125.jpg)
+
+
+![An image of Aaron Eckhart, who also goes by Harvey Dent in some circles](https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/lfw/Aaron_Eckhart/Aaron_Eckhart_0001.jpg)
+
+
 In this section, you will be expected to analyze the data you are using for the problem. This data can either be in the form of a dataset (or datasets), input data (or input files), or even an environment. The type of data should be thoroughly described and, if possible, have basic statistics and information presented (such as discussion of input features or defining characteristics about the input or environment). Any abnormalities or interesting qualities about the data that may need to be addressed have been identified (such as features that need to be transformed or the possibility of outliers). Questions to ask yourself when writing this section:
 - _If a dataset is present for this problem, have you thoroughly discussed certain features about the dataset? Has a data sample been provided to the reader?_
 - _If a dataset is present for this problem, are statistics about the dataset calculated and reported? Have any relevant results from this calculation been discussed?_
