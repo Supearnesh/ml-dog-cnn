@@ -84,7 +84,6 @@ For the scope of this project, it will be sufficient to calculate the precision,
 
 
 ## II. Analysis
-_(approx. 2-4 pages)_
 
 
 
@@ -141,9 +140,6 @@ As the focus of this project is on the CNN multi-class classifier, it would be f
 In the CNN that will be built from scratch, the five convolutional layers will all be normalized and max-pooled, and the two fully connected layers will be configured with 50% probability of dropout to prevent overfitting. This architecture is inspired by the AlexNet model. All layers will use Rectified Linear Units (ReLUs) for the reduction in training times as documented by Nair and Hinton.
 
 
-> Alex Krizhevsky, Ilya Sutskever, and Geoffrey Hinton. [ImageNet Classification with Deep Convolutional Neural Networks](https://www.cs.toronto.edu/~hinton/absps/imagenet.pdf). In _Proceedings of NIPS_, 2012.
-
-
 > Vinod Nair and Geoffrey Hinton. [Rectified Linear Units Improve Restricted Boltzmann Machines](https://www.cs.toronto.edu/~fritz/absps/reluICML.pdf). In _Proceedings of ICML_, 2010.
 
 
@@ -164,7 +160,8 @@ The [pre-trained VGG-16 model](https://pytorch.org/docs/master/torchvision/model
 
 
 ## III. Methodology
-_(approx. 3-5 pages)_
+
+
 
 
 ### Data Pre-processing
@@ -195,16 +192,10 @@ The machine learning pipeline will include:
 5. Model performance testing
 
 
-The `face_detector` function will leverage [OpenCV's implementation of Haar feature-based cascade classifiers](https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_objdetect/py_face_detection/py_face_detection.html) to detect human faces in images. The `dog_detector` function will utilize [a pre-trained ResNet-50 model](https://ethereon.github.io/netscope/#/gist/db945b393d40bfa26006) to detect dogs in images. The CCN will use transfer learning and extract bottleneck features from one of the following different pre-trained models available in Keras:
+The `face_detector` function will leverage [OpenCV's implementation of Haar feature-based cascade classifiers](https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_objdetect/py_face_detection/py_face_detection.html) to detect human faces in images. The `dog_detector` function will utilize [a pre-trained VGG-16 model](https://pytorch.org/docs/master/torchvision/models.html) to detect dogs in images. The CNN will use transfer learning and extract bottleneck features from[a VGG-19 model](https://pytorch.org/docs/master/torchvision/models.html).
 
 
-* VGG-19 bottleneck features
-* ResNet-50 bottleneck features
-* Inception bottleneck features
-* Xception bottleneck features
-
-
-To better describe the function of the CNN in this project, the illustration below shows an example of how CNNs handle image classification. The convolutional and max-pooling layers extract features from a provided input image. Those features are then used to perform non-linear transformations in the fully-connected layer and produce a classification result.
+To better describe the function of the CNN in this project, the illustration below shows an example of how CNNs handle image classification. The convolutional layers, set up with normalization and max-pooling layers, extract features from a provided input image. Those features are then used to perform non-linear transformations in the fully-connected layer and produce a classification result.
 
 
 ![CNN Schema](https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/img/cnn-schema.jpg)
@@ -213,13 +204,7 @@ To better describe the function of the CNN in this project, the illustration bel
 > Alex Krizhevsky, Ilya Sutskever, and Geoffrey Hinton. [ImageNet Classification with Deep Convolutional Neural Networks](https://www.cs.toronto.edu/~hinton/absps/imagenet.pdf). In _Proceedings of NIPS_, 2012.
 
 
-> Vinod Nair and Geoffrey Hinton. [Rectified Linear Units Improve Restricted Boltzmann Machines](https://www.cs.toronto.edu/~fritz/absps/reluICML.pdf). In _Proceedings of ICML_, 2010.
-
-
-In this section, the process for which metrics, algorithms, and techniques that you implemented for the given data will need to be clearly documented. It should be abundantly clear how the implementation was carried out, and discussion should be made regarding any complications that occurred during this process. Questions to ask yourself when writing this section:
-- _Is it made clear how the algorithms and techniques were implemented with the given datasets or input data?_
-- _Were there any complications with the original metrics or techniques that required changing prior to acquiring a solution?_
-- _Was there any part of the coding process (e.g., writing complicated functions) that should be documented?_
+As mentioned in earlier sections, there were two CNNs built for this project. The one that led to issues in particular was the one built from scratch. This CNN contains five convolutional layers, all normalized and max-pooled, and two fully connected layers with dropout configured at 50% probability. This architecture was modeled after AlexNet. All layers use Rectified Linear Units (ReLUs) for their documented reduction in training times. Even after all of this, the trained model performed quite poorly with the validation loss function severely increasing as the training loss function decreased, a classic sign of bad overfitting. Ultimately, the model managed to identify less than 10% of dog breeds correctly from the test set. Despite several hours worth of work to combat the overfitting problem, such as trying many iterations of simpler architectures containing only three convolutional layers and increasing the dropout probability of the fully connected layers, the model's performance did not improve. Ultimately, this effort was abandoned in favor of the transfer learning method to create a more proficient model in a lesser amount of time.
 
 
 
