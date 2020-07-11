@@ -24,7 +24,7 @@
 # 
 # In this notebook, you will make the first steps towards developing an algorithm that could be used as part of a mobile or web app.  At the end of this project, your code will accept any user-supplied image as input.  If a dog is detected in the image, it will provide an estimate of the dog's breed.  If a human is detected, it will provide an estimate of the dog breed that is most resembling.  The image below displays potential sample output of your finished project (... but we expect that each student's algorithm will behave differently!). 
 # 
-# ![Sample Dog Output](images/sample_dog_output.png)
+# ![Sample Dog Output](img/sample_dog_output.png)
 # 
 # In this real-world setting, you will need to piece together a series of models to perform different tasks; for instance, the algorithm that detects humans in an image will be different from the CNN that infers dog breed.  There are many points of possible failure, and no perfect algorithm exists.  Your imperfect solution will nonetheless create a fun user experience!
 # 
@@ -536,20 +536,20 @@ print("{0:.0%}".format(detected_dog_dog/100))
 # 
 # Brittany | Welsh Springer Spaniel
 # - | - 
-# <img src="images/Brittany_02625.jpg" width="100"> | <img src="images/Welsh_springer_spaniel_08203.jpg" width="200">
+# <img src="img/Brittany_02625.jpg" width="100"> | <img src="img/Welsh_springer_spaniel_08203.jpg" width="200">
 # 
 # It is not difficult to find other dog breed pairs with minimal inter-class variation (for instance, Curly-Coated Retrievers and American Water Spaniels).  
 # 
 # Curly-Coated Retriever | American Water Spaniel
 # - | -
-# <img src="images/Curly-coated_retriever_03896.jpg" width="200"> | <img src="images/American_water_spaniel_00648.jpg" width="200">
+# <img src="img/Curly-coated_retriever_03896.jpg" width="200"> | <img src="img/American_water_spaniel_00648.jpg" width="200">
 # 
 # 
 # Likewise, recall that labradors come in yellow, chocolate, and black.  Your vision-based algorithm will have to conquer this high intra-class variation to determine how to classify all of these different shades as the same breed.  
 # 
 # Yellow Labrador | Chocolate Labrador | Black Labrador
 # - | -
-# <img src="images/Labrador_retriever_06457.jpg" width="150"> | <img src="images/Labrador_retriever_06455.jpg" width="240"> | <img src="images/Labrador_retriever_06449.jpg" width="220">
+# <img src="img/Labrador_retriever_06457.jpg" width="150"> | <img src="img/Labrador_retriever_06455.jpg" width="240"> | <img src="img/Labrador_retriever_06449.jpg" width="220">
 # 
 # We also mention that random chance presents an exceptionally low bar: setting aside the fact that the classes are slightly imabalanced, a random guess will provide a correct answer roughly 1 in 133 times, which corresponds to an accuracy of less than 1%.  
 # 
@@ -955,7 +955,7 @@ print(f'prediction: {predict_breed_transfer(test_img)}')
 # 
 # Some sample output for our algorithm is provided below, but feel free to design your own user experience!
 # 
-# ![Sample Human Output](images/sample_human_output.png)
+# ![Sample Human Output](img/sample_human_output.png)
 # 
 # 
 # ### (IMPLEMENTATION) Write your Algorithm
