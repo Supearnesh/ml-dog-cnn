@@ -245,7 +245,6 @@ The model's final performance of 60% accuracy on the training set is definitivel
 
 
 ## V. Conclusion
-_(approx. 1-2 pages)_
 
 
 
@@ -264,13 +263,7 @@ Above is one example of an architecture of a CNN. There were several images like
 ### Reflection
 
 
-The end-to-end solution was challenging to complete. Specifically difficult was building a CNN architecture from scratch. This was also the portion of the project that taught the 
-
-In this section, you will summarize the entire end-to-end problem solution and discuss one or two particular aspects of the project you found interesting or difficult. You are expected to reflect on the project as a whole to show that you have a firm understanding of the entire process employed in your work. Questions to ask yourself when writing this section:
-- _Have you thoroughly summarized the entire process you used for this project?_
-- _Were there any interesting aspects of the project?_
-- _Were there any difficult aspects of the project?_
-- _Does the final model and solution fit your expectations for the problem, and should it be used in a general setting to solve these types of problems?_
+The end-to-end solution was challenging to complete, specifically difficult was the task to build a CNN architecture from scratch. This was also the most interesting portion of the project and required a firm understanding of CNNs to complete successfully. This part of the project was, in a sense, designed to fail as the bar to pass was set very low at 10%. Employing multiple methods to reduce overfitting was necessary, and even then the results were not promising. In general, using a less complex CNN, with fewer layers, is less likely to overfit, and dropout layers may increase training time but will lead to the model being less reliant on the same features to make a decision and will decrease overfitting. The final model's performance was quite underwhelming, the expectations were for the model to perform much better than it did, but it was a great introduction to CNNs and they are definitely wonderful tools to use for image classification problems. Ultimately, the most valuable lesson this project imparted was on how to find relevant research papers, explore the architectures of the solutions being used to solve those problems, and understand how those solutions are applicable to the task on hand.
 
 
 
@@ -278,24 +271,4 @@ In this section, you will summarize the entire end-to-end problem solution and d
 ### Improvement
 
 
-In this section, you will need to provide discussion as to how one aspect of the implementation you designed could be improved. As an example, consider ways your implementation can be made more general, and what would need to be modified. You do not need to make this improvement, but the potential solutions resulting from these changes are considered and compared/contrasted to your current solution. Questions to ask yourself when writing this section:
-- _Are there further improvements that could be made on the algorithms or techniques you used in this project?_
-- _Were there algorithms or techniques you researched that you did not know how to implement, but would consider using if you knew how?_
-- _If you used your final solution as the new benchmark, do you think an even better solution exists?_
-
-
-
-
------------
-
-
-**Before submitting, ask yourself. . .**
-
-
-- Does the project report you’ve written follow a well-organized structure similar to that of the project template?
-- Is each section (particularly **Analysis** and **Methodology**) written in a clear, concise and specific fashion? Are there any ambiguous terms or phrases that need clarification?
-- Would the intended audience of your project be able to understand your analysis, methods, and results?
-- Have you properly proof-read your project report to assure there are minimal grammatical and spelling mistakes?
-- Are all the resources used for this project correctly cited and referenced?
-- Is the code that implements your solution easily readable and properly commented?
-- Does the code execute without error and produce results similar to those reported?
+There were potential changes that could have been made to improve the performance of the solution in this project: augmenting the training dataset by adding flipped/rotated images would yield a much larger training set and ultimately give better results, experimenting with even more CNN architectures could potentially lead to uncovering a more effective architecture with less overfitting, and utilizing more training epochs, given more time, would both grant the training algorithms more time to converge at the local minimum and help discover patterns in training that could aid in identifying points of improvement. Out of those three, the one that was definitely the easiest to implement, and should have been completed to begin with, was performing data augmentation to the training set with flipped and rotated images. This task alone, would have provided the model with a sizably larger training set to train upon. Using the final solution of this project as a benchmark, it is definitely possible to iterate on it and outperform 60% on dog breed classification.
