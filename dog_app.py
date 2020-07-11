@@ -83,8 +83,8 @@ print('There are %d total dog images.' % len(dog_files))
 # In[2]:
 
 
-import cv2                
-import matplotlib.pyplot as plt                        
+import cv2
+import matplotlib.pyplot as plt
 get_ipython().run_line_magic('matplotlib', 'inline')
 
 # extract pre-trained face detector
@@ -177,15 +177,16 @@ print("{0:.0%}".format(detected_face_dog/100))
 
 # __Answer:__ After testing performance of the multi-task convolutional neural network face detection (MTCNN) algorithm, these were the results:
 #     - 100% of the first 100 images in `human_files` have a detected human face.
-#     - 16% of the first 100 images in `dog_files` have a detected human face.
-# The previous implementation of OpenCV already achieved very high face detection in human images (99%) and at marginal rates in dog images (10%). The MTCNN implementation, although at 100% for human face detection, detects faces in more dog images (up 6%). Model performance, however, needs to be weighed against needed functionality. For instance, in a national security application there might be a requirement not to miss any images containing human faces, and in that scenario the MTCNN would be better suited to the task.
+#     - 29% of the first 100 images in `dog_files` have a detected human face.
+# The previous implementation of OpenCV already achieved very high face detection in human images (99%) and at marginal rates in dog images (10%). The MTCNN implementation, although at 100% for human face detection, detects faces in more dog images (up 19%). Model performance, however, needs to be weighed against needed functionality. For instance, in a national security application there might be a requirement not to miss any images containing human faces, and in that scenario the MTCNN would be better suited to the task.
 # 
 # > Kaipeng Zhang, Zhanpeng Zhang, Zhifeng Li, and Yu Qiao. [Joint Face Detection and Alignment Using Multi-task Cascaded Convolutional Networks](https://kpzhang93.github.io/MTCNN_face_detection_alignment). In _IEEE Signal Processing Letters_, 2016.
 
-# In[7]:
+# In[5]:
 
 
-from mtcnn import MTCNN
+import numpy as np
+from facenet_pytorch import MTCNN
 
 ### (Optional) 
 ### DONE: Test performance of another face detection algorithm.
@@ -198,16 +199,21 @@ def face_detector_deep_learning(img_path):
     pixels = plt.imread(img_path)
     
     # create the detector, using default weights
-    detector = MTCNN()
+    detector = MTCNN(post_process=False, device='cuda')
     
     # detect faces in the image
-    faces = detector.detect_faces(pixels)
+    faces, _ = detector.detect(pixels)
     
-    return len(faces) > 0
+    return faces is not None
 
 
-# In[8]:
+# In[6]:
 
+
+import matplotlib.pyplot as plt
+
+human_files_short = human_files[:100]
+dog_files_short = dog_files[:100]
 
 ## DONE: Test the performance of the face_detector algorithm 
 ## on the images in human_files_short and dog_files_short.
@@ -237,7 +243,7 @@ print("{0:.0%}".format(detected_face_dog/100))
 # 
 # The code cell below downloads the VGG-16 model, along with weights that have been trained on [ImageNet](http://www.image-net.org/), a very large, very popular dataset used for image classification and other vision tasks.  ImageNet contains over 10 million URLs, each linking to an image containing an object from one of [1000 categories](https://gist.github.com/yrevar/942d3a0ac09ec9e5eb3a).  
 
-# In[8]:
+# In[7]:
 
 
 import torch
@@ -262,7 +268,7 @@ if use_cuda:
 # 
 # Before writing the function, make sure that you take the time to learn  how to appropriately pre-process tensors for pre-trained models in the [PyTorch documentation](http://pytorch.org/docs/stable/torchvision/models.html).
 
-# In[9]:
+# In[8]:
 
 
 from PIL import Image
@@ -330,7 +336,7 @@ def VGG16_predict(img_path):
     return predicted_class_index # predicted class index
 
 
-# In[10]:
+# In[9]:
 
 
 test_img = dog_files[6]
@@ -344,7 +350,7 @@ VGG16_predict(test_img)
 # 
 # Use these ideas to complete the `dog_detector` function below, which returns `True` if a dog is detected in an image (and `False` if not).
 
-# In[11]:
+# In[10]:
 
 
 ### returns "True" if a dog is detected in the image stored at img_path
@@ -364,10 +370,10 @@ def dog_detector(img_path):
 # - What percentage of the images in `dog_files_short` have a detected dog?
 
 # __Answer:__
-#     - 1% of the images in `human_files_short` have a detected dog.
-#     - 99% of the images in `dog_files_short` have a detected dog.
+#     - 0% of the images in `human_files_short` have a detected dog.
+#     - 97% of the images in `dog_files_short` have a detected dog.
 
-# In[12]:
+# In[11]:
 
 
 ### DONE: Test the performance of the dog_detector function
@@ -390,7 +396,12 @@ print("{0:.0%}".format(detected_dog_dog/100))
 
 # We suggest VGG-16 as a potential network to detect dog images in your algorithm, but you are free to explore other pre-trained networks (such as [Inception-v3](http://pytorch.org/docs/master/torchvision/models.html#inception-v3), [ResNet-50](http://pytorch.org/docs/master/torchvision/models.html#id3), etc).  Please use the code cell below to test other pre-trained PyTorch models.  If you decide to pursue this _optional_ task, report performance on `human_files_short` and `dog_files_short`.
 
-# In[11]:
+# __Answer:__ After testing performance of the Inception-V3 model, these were the results:
+#     - 2% of the first 100 images in `human_files` have a detected dog.
+#     - 98% of the first 100 images in `dog_files` have a detected dog.
+# The results between the VGG-16 and Inception-V3 models are very marginal and they perform about the same.
+
+# In[12]:
 
 
 import torch
@@ -412,7 +423,7 @@ if use_cuda:
     inception = inception.cuda()
 
 
-# In[ ]:
+# In[13]:
 
 
 def inception_predict(img_path):
@@ -473,7 +484,7 @@ def inception_predict(img_path):
     return predicted_class_index # predicted class index
 
 
-# In[ ]:
+# In[14]:
 
 
 test_img = dog_files[6]
@@ -481,7 +492,7 @@ print(f'test_img: https://github.com/Supearnesh/ml-dog-cnn/blob/master/{test_img
 inception_predict(test_img)
 
 
-# In[16]:
+# In[15]:
 
 
 ### returns "True" if a dog is detected in the image stored at img_path
@@ -494,7 +505,7 @@ def dog_detector_inception(img_path):
     return predicted_class_index in dog_range # true/false
 
 
-# In[17]:
+# In[16]:
 
 
 ### DONE: Test the performance of the dog_detector function
@@ -548,7 +559,7 @@ print("{0:.0%}".format(detected_dog_dog/100))
 # 
 # Use the code cell below to write three separate [data loaders](http://pytorch.org/docs/stable/data.html#torch.utils.data.DataLoader) for the training, validation, and test datasets of dog images (located at `dogImages/train`, `dogImages/valid`, and `dogImages/test`, respectively).  You may find [this documentation on custom datasets](http://pytorch.org/docs/stable/torchvision/datasets.html) to be a useful resource.  If you are interested in augmenting your training and/or validation data, check out the wide variety of [transforms](http://pytorch.org/docs/stable/torchvision/transforms.html?highlight=transform)!
 
-# In[9]:
+# In[17]:
 
 
 import os
@@ -581,13 +592,13 @@ loaders_scratch = {'train': loader_train, 'valid': loader_valid, 'test': loader_
 # - Did you decide to augment the dataset?  If so, how (through translations, flips, rotations, etc)?  If not, why not?
 # 
 
-# **Answer**: The images were resized to 256 x 256 and then centercropped to 224 x 224, these were the same parameters used for the VGG_16 model. The dataset was not augmented by adding flipped/rotated images, although that is an effective method for increasing the training size. The goal of this exercise was to establish a baseline for a CNN that would later be overtaken by transfer learning.
+# **Answer**: The images were resized to 256 x 256 and then centercropped to create an image tensor of size 224 x 224 x 3, these were the same parameters used for the VGG_16 model. The dataset was not augmented by adding flipped/rotated images in the interest of time, although that is an effective method for increasing the training size. The goal of this exercise was to establish a baseline for a CNN that would later be overtaken by transfer learning.
 
 # ### (IMPLEMENTATION) Model Architecture
 # 
 # Create a CNN to classify dog breed.  Use the template in the code cell below.
 
-# In[35]:
+# In[18]:
 
 
 import torch
@@ -601,28 +612,44 @@ class Net(nn.Module):
         super(Net, self).__init__()
         ## Define layers of a CNN
         # convolutional layer (sees 224x224x3 tensor)
-        self.conv_01 = nn.Conv2d(in_channels=3, out_channels=16, kernel_size=3, stride=1, padding=1)
-        # convolutional layer (sees 112x112x16 tensor)
-        self.conv_02 = nn.Conv2d(in_channels=16, out_channels=32, kernel_size=3, stride=1, padding=1)
-        # convolutional layer pooled (sees 56x56x32 tensor)
-        self.conv_03 = nn.Conv2d(in_channels=32, out_channels=64, kernel_size=3, stride=1, padding=1)
+        self.conv_01 = nn.Conv2d(in_channels=3, out_channels=32, kernel_size=3, stride=1, padding=1)
+        # batch normalization applied to convolutional layer
+        self.norm_01 = nn.BatchNorm2d(32)
+        # convolutional layer (sees 112x112x32 tensor)
+        self.conv_02 = nn.Conv2d(in_channels=32, out_channels=64, kernel_size=3, stride=1, padding=1)
+        # batch normalization applied to convolutional layer
+        self.norm_02 = nn.BatchNorm2d(64)
+        # convolutional layer (sees 56x56x64 tensor)
+        self.conv_03 = nn.Conv2d(in_channels=64, out_channels=128, kernel_size=3, stride=1, padding=1)
+        # batch normalization applied to convolutional layer
+        self.norm_03 = nn.BatchNorm2d(128)
+        # convolutional layer pooled (sees 28x28x128 tensor)
+        self.conv_04 = nn.Conv2d(in_channels=128, out_channels=256, kernel_size=3, stride=1, padding=1)
+        # batch normalization applied to convolutional layer
+        self.norm_04 = nn.BatchNorm2d(256)
+        # convolutional layer pooled (sees 7x7x256 tensor)
+        self.conv_05 = nn.Conv2d(in_channels=256, out_channels=512, kernel_size=3, stride=1, padding=1)
+        # batch normalization applied to convolutional layer
+        self.norm_05 = nn.BatchNorm2d(512)
         # max pooling layer
         self.pool = nn.MaxPool2d(kernel_size=2, stride=2)
-        # linear layer (64 * 28 * 28 -> 500)
-        self.fc_01 = nn.Linear(64 * 28 * 28, 500)
-        # linear layer (500 -> 133)
-        self.fc_02 = nn.Linear(500, 133)
-        # dropout layer (p=0.25)
-        self.dropout = nn.Dropout(0.25)
+        # linear layer (7 * 7 * 512 -> 500)
+        self.fc_01 = nn.Linear(512 * 7 * 7, 4096)
+        # linear layer (4096 -> 133)
+        self.fc_02 = nn.Linear(4096, 133)
+        # dropout layer (p = 0.50)
+        self.dropout = nn.Dropout(0.50)
     
     def forward(self, x):
         ## Define forward behavior
         # add sequence of convolutional and max pooling layers
-        x = self.pool(F.relu(self.conv_01(x)))
-        x = self.pool(F.relu(self.conv_02(x)))
-        x = self.pool(F.relu(self.conv_03(x)))
+        x = self.pool(F.relu(self.norm_01(self.conv_01(x))))
+        x = self.pool(F.relu(self.norm_02(self.conv_02(x))))
+        x = self.pool(F.relu(self.norm_03(self.conv_03(x))))
+        x = self.pool(F.relu(self.norm_04(self.conv_04(x))))
+        x = self.pool(F.relu(self.norm_05(self.conv_05(x))))
         # flatten image input
-        x = x.view(-1, 64 * 28 * 28)
+        x = x.view(-1, 7 * 7 * 512)
         # add dropout layer
         x = self.dropout(x)
         # add first hidden layer, with relu activation function
@@ -649,15 +676,17 @@ if use_cuda:
 
 # __Question 4:__ Outline the steps you took to get to your final CNN architecture and your reasoning at each step.  
 
-# __Answer:__ The structure of the CNN is rather simple, from the input layer data flows through 3 convolutional layers and is mapped to the output at a single fully connected layer. The first two convolutional layers are normalized and pooled, all three are using a Rectified Linear Unit as well as droupout with a probability of 50%. These steps are taken to ...
+# __Answer:__ The CNN contains five convolutional layers, all normalized and max-pooled, and two fully connected layers with dropout configured at 50% probability. This architecture was inspired by by the AlexNet model. All layers use Rectified Linear Units (ReLUs) for the reduction in training times as documented by Nair and Hinton. Even after all of this, the trained model performed quite poorly with the validation loss function severely increasing as the training loss function decreased, a classic sign of bad overfitting. Ultimately, the model managed to identify less than 10% of dog breeds correctly from the test set. Despite several hours worth of efforts to combat the overfitting problem, such as trying many iterations of simpler architectures containing only three convolutional layers and increasing the dropout probability of the fully connected layers, the model's performance did not improve.
 # 
-# Cite paper
+# > Alex Krizhevsky, Ilya Sutskever, and Geoffrey Hinton. [ImageNet Classification with Deep Convolutional Neural Networks](https://www.cs.toronto.edu/~hinton/absps/imagenet.pdf). In _Proceedings of NIPS_, 2012.
+# 
+# > Vinod Nair and Geoffrey Hinton. [Rectified Linear Units Improve Restricted Boltzmann Machines](https://www.cs.toronto.edu/~fritz/absps/reluICML.pdf). In _Proceedings of ICML_, 2010.
 
 # ### (IMPLEMENTATION) Specify Loss Function and Optimizer
 # 
 # Use the next code cell to specify a [loss function](http://pytorch.org/docs/stable/nn.html#loss-functions) and [optimizer](http://pytorch.org/docs/stable/optim.html).  Save the chosen loss function as `criterion_scratch`, and the optimizer as `optimizer_scratch` below.
 
-# In[36]:
+# In[19]:
 
 
 import torch.optim as optim
@@ -673,24 +702,37 @@ if use_cuda:
     criterion_scratch = criterion_scratch.cuda()
 
 ### DONE: select optimizer
-optimizer_scratch = optim.SGD(model_scratch.parameters(), lr=0.01)
+optimizer_scratch = optim.SGD(model_scratch.parameters(), lr=0.001)
 
 
 # ### (IMPLEMENTATION) Train and Validate the Model
 # 
 # Train and validate your model in the code cell below.  [Save the final model parameters](http://pytorch.org/docs/master/notes/serialization.html) at filepath `'model_scratch.pt'`.
 
-# In[37]:
+# In[20]:
 
 
-get_ipython().run_cell_magic('time', '', '\nimport numpy as np\n\n# the following import is required for training to be robust to truncated images\nfrom PIL import ImageFile\nImageFile.LOAD_TRUNCATED_IMAGES = True\n\ndef train(n_epochs, loaders, model, optimizer, criterion, use_cuda, save_path):\n    """returns trained model"""\n    # initialize tracker for minimum validation loss\n    valid_loss_min = np.Inf \n    \n    for epoch in range(1, n_epochs+1):\n        # initialize variables to monitor training and validation loss\n        train_loss = 0.0\n        valid_loss = 0.0\n        \n        ###################\n        # train the model #\n        ###################\n        model.train()\n        for batch_idx, (data, target) in enumerate(loaders[\'train\']):\n            # check if CUDA is available\n            use_cuda = torch.cuda.is_available()\n            # move to GPU if CUDA is available\n            if use_cuda:\n                data, target = data.cuda(), target.cuda()\n            # clear the gradients of all optimized variables\n            optimizer.zero_grad()\n            # forward pass: compute predicted outputs by passing inputs to the model\n            output = model(data)\n            # calculate the batch loss\n            loss = criterion(output, target)\n            # backward pass: compute gradient of the loss with respect to model parameters\n            loss.backward()\n            # perform a single optimization step (parameter update)\n            optimizer.step()\n            # update training loss\n            train_loss = train_loss + ((1 / (batch_idx + 1)) * (loss.data - train_loss))\n            \n        ######################    \n        # validate the model #\n        ######################\n        model.eval()\n        for batch_idx, (data, target) in enumerate(loaders[\'valid\']):\n            # check if CUDA is available\n            use_cuda = torch.cuda.is_available()\n            # move tensors to GPU if CUDA is available\n            if use_cuda:\n                data, target = data.cuda(), target.cuda()\n            # forward pass: compute predicted outputs by passing inputs to the model\n            output = model(data)\n            # calculate the batch loss\n            loss = criterion(output, target)\n            # update average validation loss \n            valid_loss = valid_loss + ((1 / (batch_idx + 1)) * (loss.data - valid_loss))\n            \n        # print training/validation statistics \n        print(\'Epoch: {} \\tTraining Loss: {:.6f} \\tValidation Loss: {:.6f}\'.format(\n            epoch, \n            train_loss,\n            valid_loss\n            ))\n        \n        ## DONE: save the model if validation loss has decreased\n        if valid_loss < valid_loss_min:\n            print(f\'The validation loss has decreased from {valid_loss_min} to {valid_loss}.\')\n            valid_loss_min = valid_loss\n            torch.save(model.state_dict(), save_path)\n            \n    # return trained model\n    return model\n\n\n# train the model\nmodel_scratch = train(30, loaders_scratch, model_scratch, optimizer_scratch, \n                      criterion_scratch, use_cuda, \'model_scratch.pt\')\n\n# load the model that got the best validation accuracy\nmodel_scratch.load_state_dict(torch.load(\'model_scratch.pt\'))')
+get_ipython().run_cell_magic('time', '', '\nimport numpy as np\n\n# the following import is required for training to be robust to truncated images\nfrom PIL import ImageFile\nImageFile.LOAD_TRUNCATED_IMAGES = True\n\ndef train(n_epochs, loaders, model, optimizer, criterion, use_cuda, save_path):\n    """returns trained model"""\n    # initialize tracker for minimum validation loss\n    valid_loss_min = np.Inf \n    \n    for epoch in range(1, n_epochs+1):\n        # initialize variables to monitor training and validation loss\n        train_loss = 0.0\n        valid_loss = 0.0\n        \n        ###################\n        # train the model #\n        ###################\n        model.train()\n        for batch_idx, (data, target) in enumerate(loaders[\'train\']):\n            # check if CUDA is available\n            use_cuda = torch.cuda.is_available()\n            # move to GPU if CUDA is available\n            if use_cuda:\n                data, target = data.cuda(), target.cuda()\n            # clear the gradients of all optimized variables\n            optimizer.zero_grad()\n            # forward pass: compute predicted outputs by passing inputs to the model\n            output = model(data)\n            # calculate the batch loss\n            loss = criterion(output, target)\n            # backward pass: compute gradient of the loss with respect to model parameters\n            loss.backward()\n            # perform a single optimization step (parameter update)\n            optimizer.step()\n            # update training loss\n            train_loss = train_loss + ((1 / (batch_idx + 1)) * (loss.data - train_loss))\n            \n        ######################    \n        # validate the model #\n        ######################\n        model.eval()\n        for batch_idx, (data, target) in enumerate(loaders[\'valid\']):\n            # check if CUDA is available\n            use_cuda = torch.cuda.is_available()\n            # move tensors to GPU if CUDA is available\n            if use_cuda:\n                data, target = data.cuda(), target.cuda()\n            # forward pass: compute predicted outputs by passing inputs to the model\n            output = model(data)\n            # calculate the batch loss\n            loss = criterion(output, target)\n            # update average validation loss \n            valid_loss = valid_loss + ((1 / (batch_idx + 1)) * (loss.data - valid_loss))\n            \n        # print training/validation statistics \n        print(\'Epoch: {} \\tTraining Loss: {:.6f} \\tValidation Loss: {:.6f}\'.format(\n            epoch, \n            train_loss,\n            valid_loss\n            ))\n        \n        ## DONE: save the model if validation loss has decreased\n        if valid_loss < valid_loss_min:\n            print(f\'The validation loss has decreased from {valid_loss_min} to {valid_loss}.\')\n            valid_loss_min = valid_loss\n            torch.save(model.state_dict(), save_path)\n            \n    # return trained model\n    return model')
+
+
+# In[21]:
+
+
+n_epochs = 25
+
+# train the model
+model_scratch = train(n_epochs, loaders_scratch, model_scratch, optimizer_scratch, 
+                      criterion_scratch, use_cuda, 'model_scratch.pt')
+
+# load the model that got the best validation accuracy
+model_scratch.load_state_dict(torch.load('model_scratch.pt'))
 
 
 # ### (IMPLEMENTATION) Test the Model
 # 
 # Try out your model on the test dataset of dog images.  Use the code cell below to calculate and print the test loss and accuracy.  Ensure that your test accuracy is greater than 10%.
 
-# In[ ]:
+# In[22]:
 
 
 def test(loaders, model, criterion, use_cuda):
@@ -722,6 +764,10 @@ def test(loaders, model, criterion, use_cuda):
     print('\nTest Accuracy: %2d%% (%2d/%2d)' % (
         100. * correct / total, correct, total))
 
+
+# In[23]:
+
+
 # call test function    
 test(loaders_scratch, model_scratch, criterion_scratch, use_cuda)
 
@@ -738,7 +784,7 @@ test(loaders_scratch, model_scratch, criterion_scratch, use_cuda)
 # 
 # If you like, **you are welcome to use the same data loaders from the previous step**, when you created a CNN from scratch.
 
-# In[47]:
+# In[24]:
 
 
 ## DONE: Specify data loaders
@@ -749,11 +795,12 @@ loaders_transfer = loaders_scratch
 # 
 # Use transfer learning to create a CNN to classify dog breed.  Use the code cell below, and save your initialized model as the variable `model_transfer`.
 
-# In[51]:
+# In[25]:
 
 
 import torchvision.models as models
 import torch.nn as nn
+import torch
 
 ## DONE: Specify model architecture 
 model_transfer = models.vgg19(pretrained=True)
@@ -773,15 +820,19 @@ if use_cuda:
 
 # __Question 5:__ Outline the steps you took to get to your final CNN architecture and your reasoning at each step.  Describe why you think the architecture is suitable for the current problem.
 
-# __Answer:__ 
+# __Answer:__ The pretrained VGG-19 model contains the same architecture as that described by Simonyan and Zisserman in their paper, cited below. The results attained by their model showed great promise for a similar image classification problem and it made sense to reuse the same architecture, only modifying the final fully connected layer to correctly map to the 133 categories being used to classify dog breeds.
 # 
+# 
+# > Karen Simonyan and Andrew Zisserman. [Very Deep Convolutional Neural Network Based Image Classification Using Small Training Sample Size](https://arxiv.org/pdf/1409.1556.pdf). In _Proceedings of ICLR_, 2015.
 
 # ### (IMPLEMENTATION) Specify Loss Function and Optimizer
 # 
 # Use the next code cell to specify a [loss function](http://pytorch.org/docs/master/nn.html#loss-functions) and [optimizer](http://pytorch.org/docs/master/optim.html).  Save the chosen loss function as `criterion_transfer`, and the optimizer as `optimizer_transfer` below.
 
-# In[52]:
+# In[26]:
 
+
+import torch.optim as optim
 
 criterion_transfer = nn.CrossEntropyLoss()
 
@@ -790,17 +841,19 @@ use_cuda = torch.cuda.is_available()
 
 # move loss function to GPU if CUDA is available
 if use_cuda:
-    criterion_scratch = criterion_scratch.cuda()
+    criterion_transfer = criterion_transfer.cuda()
 
-optimizer_transfer = optim.SGD(model_scratch.parameters(), lr=0.05, momentum=0.9, weight_decay=0.0005)
+optimizer_transfer = optim.SGD(model_transfer.parameters(), lr=0.001)
 
 
 # ### (IMPLEMENTATION) Train and Validate the Model
 # 
 # Train and validate your model in the code cell below.  [Save the final model parameters](http://pytorch.org/docs/master/notes/serialization.html) at filepath `'model_transfer.pt'`.
 
-# In[ ]:
+# In[27]:
 
+
+n_epochs = 25
 
 # train the model
 model_transfer = train(n_epochs, loaders_transfer, model_transfer, optimizer_transfer, criterion_transfer, use_cuda, 'model_transfer.pt')
@@ -813,7 +866,7 @@ model_transfer.load_state_dict(torch.load('model_transfer.pt'))
 # 
 # Try out your model on the test dataset of dog images. Use the code cell below to calculate and print the test loss and accuracy.  Ensure that your test accuracy is greater than 60%.
 
-# In[ ]:
+# In[28]:
 
 
 test(loaders_transfer, model_transfer, criterion_transfer, use_cuda)
@@ -823,17 +876,20 @@ test(loaders_transfer, model_transfer, criterion_transfer, use_cuda)
 # 
 # Write a function that takes an image path as input and returns the dog breed (`Affenpinscher`, `Afghan hound`, etc) that is predicted by your model.  
 
-# In[ ]:
+# In[29]:
 
 
 ### DONE: Write a function that takes a path to an image as input
 ### and returns the dog breed that is predicted by the model.
 
+data_transfer = loaders_transfer
+
 # list of class names by index, i.e. a name can be accessed like class_names[0]
-class_names = [item[4:].replace("_", " ") for item in data_transfer['train'].classes]
+class_names = [item[4:].replace("_", " ") for item in data_transfer['train'].dataset.classes]
 
 def predict_breed_transfer(img_path):
     # load the image and return the predicted breed
+    global model_transfer
     
     # load image from file
     img = Image.open(img_path)
@@ -854,15 +910,17 @@ def predict_breed_transfer(img_path):
     
     # check if CUDA is available
     use_cuda = torch.cuda.is_available()
-
-    # move image tensor and model prediction to GPU if CUDA is available
+    
+    # move image tensor to GPU if CUDA is available
     if use_cuda:
         tensor_img = tensor_img.cuda()
-        model_transfer = model_transfer.cuda()
     
-    # set model to evaluation mode and make prediction
-    model_transfer.eval()
+    # make prediction by passing image tensor to model
     prediction = model_transfer(tensor_img)
+    
+    # move model prediction to GPU if CUDA is available
+    if use_cuda:
+        model_transfer = model_transfer.cuda()
     
     # convert predicted probabilities to class index
     tensor_prediction = torch.argmax(prediction)
@@ -876,13 +934,12 @@ def predict_breed_transfer(img_path):
     return class_names[predicted_class_index] # predicted class index
 
 
-# In[ ]:
+# In[30]:
 
 
-print(f'img_file{}')
-test_img = dog_files[6]
+test_img = dog_files[12]
 print(f'test_img: https://github.com/Supearnesh/ml-dog-cnn/blob/master/{test_img}')
-print(f'prediction: {inception_predict(test_img)}')
+print(f'prediction: {predict_breed_transfer(test_img)}')
 
 
 # ---
@@ -903,7 +960,7 @@ print(f'prediction: {inception_predict(test_img)}')
 # 
 # ### (IMPLEMENTATION) Write your Algorithm
 
-# In[ ]:
+# In[31]:
 
 
 ### DONE: Write your algorithm.
@@ -937,9 +994,12 @@ def run_app(img_path):
 # 
 # __Question 6:__ Is the output better than you expected :) ?  Or worse :( ?  Provide at least three possible points of improvement for your algorithm.
 
-# __Answer:__ (Three possible points for improvement)
+# __Answer:__ The output was not as good as I've come to expect from my other machine learning projects. I believe that the performance can be tangibly improved my making the following changes:
+# * augmenting the training dataset by adding flipped/rotated images would yield a much larger training set and ultimately give better results
+# * experimenting with even more CNN architectures could potentially lead to uncovering a more effective architecture with less overfitting
+# * utilizing more training epochs, given more time, would both grant the training algorithms more time to converge at the local minimum and help discover patterns in training that could aid in identifying points of improvement
 
-# In[ ]:
+# In[32]:
 
 
 ## DONE: Execute your algorithm from Step 6 on
@@ -951,8 +1011,47 @@ for file in np.hstack((human_files[:3], dog_files[:3])):
     run_app(file)
 
 
-# In[ ]:
+# In[33]:
 
 
-run_app(https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/img/arnesh_sahay.jpg)
+import urllib
+import matplotlib.pyplot as plt
+
+img = Image.open(urllib.request.urlopen('https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/img/arnesh_sahay.jpg'))
+
+plt.imshow(img)
+plt.show()
+
+transform = T.Compose([T.Resize(256), T.CenterCrop(224), T.ToTensor()])
+transformed_img = transform(img)
+
+# the images have to be loaded in to a range of [0, 1]
+# then normalized using mean = [0.485, 0.456, 0.406] and std = [0.229, 0.224, 0.225]
+normalize = T.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+normalized_img = normalize(transformed_img)
+
+# model loading
+tensor_img = normalized_img.unsqueeze(0)
+
+# check if CUDA is available
+use_cuda = torch.cuda.is_available()
+
+# move image tensor to GPU if CUDA is available
+if use_cuda:
+    tensor_img = tensor_img.cuda()
+
+# make prediction by passing image tensor to model
+prediction = model_transfer(tensor_img)
+# convert predicted probabilities to class index
+tensor_prediction = torch.argmax(prediction)
+
+# move prediction tensor to CPU if CUDA is available
+if use_cuda:
+    tensor_prediction = tensor_prediction.cpu()
+
+predicted_class_index = int(np.squeeze(tensor_prediction.numpy()))
+
+class_out = class_names[predicted_class_index] # predicted class index
+
+print(class_out)
 

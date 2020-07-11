@@ -23,19 +23,19 @@ July 2020
 Over the course of the last 30,000 years, humans have domesticated dogs and turned them into truly wonderful companions. Dogs are very diverse animals, showing considerable variation between different breeds. On an evening walk through a given neighborhood, one may encounter several dogs that bear no semblance to each other. Other breeds of dogs are so similar that it is difficult for the untrained eye to tell them apart. Included below are a few different images, see if it would be possible for the average person to determine the the breed of these dogs.
 
 
-![Labrador Retrievers are recognized as having three possible coat colors: yellow, chocolate and black.](https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/img/breed_colors.png)
+![Labrador Retrievers are recognized as having three possible coat colors: yellow, chocolate and black](https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/img/breed_colors.png)
 
 
-![The legitimacy of a fourth color, silver, is widely contested amongst breeders.](https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/img/silver_labrador.jpg)
+![The legitimacy of a fourth color, silver, is widely contested amongst breeders](https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/img/silver_labrador.jpg)
 
 
 > LTHQ et al. [Silver Labrador Retriever Facts And Controversy](https://www.labradortraininghq.com/labrador-breed-information/silver-labrador-retriever). In _Labrador Training HQ_, 2020.
 
 
-![It is not easy to distinguish between the Brittany (left) and the Welsh Springer Spaniel (right) due to similarities in the patterned fur around their eyes.](https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/img/breed_similarity_01.png)
+![It is not easy to distinguish between the Brittany (left) and the Welsh Springer Spaniel (right) due to similarities in the patterned fur around their eyes](https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/img/breed_similarity_01.png)
 
 
-![Another pair of dogs, the Curly-coated Retriever (left) and the American Water Spaniel (right), that are difficult to tell apart from the texture of their coats.](https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/img/breed_similarity_02.png)
+![Another pair of dogs, the Curly-coated Retriever (left) and the American Water Spaniel (right), that are difficult to tell apart from the texture of their coats](https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/img/breed_similarity_02.png)
 
 
 It may take many weeks or months for a person to learn enough about the physical attributes and unique features of different dog breeds to effectively identify them with a high degree of confidence. It would be interesting to see if a machine learning model can be trained to accomplish the same task in a matter of a few hours. The goal of this project is to use a [Convolutional Neural Network (CNN)](https://en.wikipedia.org/wiki/Convolutional_neural_network) to train a dog breed classifier across 133 breeds of dogs, using the [`dogImages`](https://s3-us-west-1.amazonaws.com/udacity-aind/dog-project/dogImages.zip) dataset, which consists of 8,351 total images split into 133 different categories by dog breed.
@@ -78,13 +78,15 @@ A further calculation can be made using precision and recall to yield the F1 sco
 ![F1 Score](https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/img/f1_score.png)
 
 
-For the scope of this project, it will be sufficient to calculate the precision, recall, and F1 score for the CNN against a test set from the `dogImages` dataset alone. The binary classifiers used to detect dogs and humans will not be evaluated since they are both out-of-the-box models.
+For the scope of this project, it will be sufficient to calculate the precision, recall, and F1 score for the CNN against a test set from the `dogImages` dataset alone. The binary classifiers used to detect dogs and humans will not be evaluated since they are both out-of-the-box models only used for binary classification.
 
 
 
 
 ## II. Analysis
 _(approx. 2-4 pages)_
+
+
 
 
 ### Data Exploration
@@ -107,16 +109,18 @@ As far as the image resolutions go, the data consists of varying sizes and dimen
 ### Exploratory Visualization
 
 
-When training and evaluating the multi-class classifier, it will be important to understand the data distribution in the training, validation, and test sets across all 133 classes to ensure that there are no class imbalances that need to be taken into consideration. To that end, there are three plots below that show the distribution across all 133 classes for the `train`, `valid`, and `test` splits of the `dogImages` dataset.
+When picking a model to use for transfer learning to build the CNN, it would be useful to know how effective the features of the original model are to tell dogs and humans apart. In the plots below, several different 
 
 
-![Data Distribution for the Training Set](https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/img/data_distribution_plot_train.jpg)
+it will be important to understand the data distribution in the training, validation, and test sets across all 133 classes to ensure that there are no class imbalances that need to be taken into consideration. To that end, there are three plots below that show the distribution across all 133 classes for the `train`, `valid`, and `test` splits of the `dogImages` dataset.
 
 
-![Data Distribution for the Validation Set](https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/img/data_distribution_plot_valid.jpg)
+![VGG-19 Model](https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/img/tranfer_learning_vgg19.png)
 
 
-![Data Distribution for the Test Set](https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/img/data_distribution_plot_test.jpg)
+![ResNet-50 Model](https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/img/tranfer_learning_resnet50.png)
+
+
 
 
 In this section, you will need to provide some form of visualization that summarizes or extracts a relevant characteristic or feature about the data. The visualization should adequately support the data being used. Discuss why this visualization was chosen and how it is relevant. Questions to ask yourself when writing this section:
@@ -130,10 +134,30 @@ In this section, you will need to provide some form of visualization that summar
 ### Algorithms and Techniques
 
 
-There will be a total of three models, as stated earlier. The first model, a `face_detector`  will use [OpenCV's implementation of Haar feature-based cascade classifiers](https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_objdetect/py_face_detection/py_face_detection.html) to determine if a human face is present, returning `true` if a face is present, or `false` if a face is not present in the image. The second model, a `dog_detector` will leverage [a pre-trained VGG-16 model](https://pytorch.org/docs/master/torchvision/models.html) to identify if the images contain a dog, returning `true` if a dog is present, or `false` if a dog is not present. The third model will be a CNN trained using [transfer learning](https://en.wikipedia.org/wiki/Transfer_learning) from [a pre-trained VGG-19 model](https://pytorch.org/docs/master/torchvision/models.html).
+There will be a total of three models, as stated earlier. The first model, a `face_detector` will use [OpenCV's implementation of Haar feature-based cascade classifiers](https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_objdetect/py_face_detection/py_face_detection.html) to determine if a human face is present, returning `true` if a face is present, or `false` if a face is not present in the image. The second model, a `dog_detector` will leverage [a pre-trained VGG-16 model](https://pytorch.org/docs/master/torchvision/models.html) to identify if the images contain a dog, returning `true` if a dog is present, or `false` if a dog is not present. The third model will be a CNN trained using [transfer learning](https://en.wikipedia.org/wiki/Transfer_learning) from [a pre-trained VGG-19 model](https://pytorch.org/docs/master/torchvision/models.html).
 
 
-As the focus of this project is on the CNN multi-class classifier, it would be apt to go into a bit more depth on its architecture. As a background on neural networks in general, they typically consist of an input layer and an output layer with some hidden layers in between. At a very high level, the input layer is responsible for taking in data, the hidden layers apply some changes to it, and the output layer yield the result. In the CNN built for this project, the input layer took in a pre-processed 256 x 256 image.
+As the focus of this project is on the CNN multi-class classifier, it would be fitting to discuss its architecture in more depth. As a background on neural networks in general, they typically consist of an input layer and an output layer with some hidden layers in between. At a very high level, the input layer is responsible for taking in data, the hidden layers apply some changes to it, and the output layer yields the result. There will actually be two CNNs built for this project, one from scratch and another using transfer learning. The goal is to understand the architecture of a CNN better by building one from scratch and then train one using transfer learning to achieve better results. Both CNNs will contain an input layer that takes in a pre-processed 3 x 256 x 256 image tensor. That tensor will then be mapped across five convolutional layers and two fully connected layers to generate a final prediction out of 133 categories.
+
+
+In the CNN that will be built from scratch, the five convolutional layers will all be normalized and max-pooled, and the two fully connected layers will be configured with 50% probability of dropout to prevent overfitting. This architecture is inspired by the AlexNet model. All layers will use Rectified Linear Units (ReLUs) for the reduction in training times as documented by Nair and Hinton.
+
+
+> Alex Krizhevsky, Ilya Sutskever, and Geoffrey Hinton. [ImageNet Classification with Deep Convolutional Neural Networks](https://www.cs.toronto.edu/~hinton/absps/imagenet.pdf). In _Proceedings of NIPS_, 2012.
+
+
+> Vinod Nair and Geoffrey Hinton. [Rectified Linear Units Improve Restricted Boltzmann Machines](https://www.cs.toronto.edu/~fritz/absps/reluICML.pdf). In _Proceedings of ICML_, 2010.
+
+
+In the CNN built using transfer learning, [a pre-trained VGG-19 model](https://pytorch.org/docs/master/torchvision/models.html) will be used to get much better results than the CNN trained from scratch. Transfer learning involves taking a pre-trained model and using its 
+
+
+
+![VGG-19 CNN Architecture](https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/img/vgg19_architecture.jpg)
+
+
+
+
 
 
 In this section, you will need to discuss the algorithms and techniques you intend to use for solving the problem. You should justify the use of each one based on the characteristics of the problem and the problem domain. Questions to ask yourself when writing this section:
@@ -156,7 +180,7 @@ The [pre-trained VGG-16 model](https://pytorch.org/docs/master/torchvision/model
 _(approx. 3-5 pages)_
 
 
-### Data Preprocessing
+### Data Pre-processing
 
 
 In addition to separating the data into training, test, and validation sets, the data also needs to be pre-processed. Specifically, all images should be resized to 256 x 256 pixels and then center cropped to 224 x 224 to ensure that they are all uniform in dimensions for the tensor. Also, the red, green, and blue (RGB) color channels should be normalized so that gradient calculations performed by the neural network during training can done more consistently and efficiently. Apart from these items, the images are part of a prepared dataset so there are no abnormalities or inconsistencies that need to be addressed in data pre-processing.
@@ -258,7 +282,7 @@ _(approx. 1-2 pages)_
 
 
 
-### Free-Form Visualization
+### Free-form Visualization
 
 
 In this section, you will need to provide some form of visualization that emphasizes an important quality about the project. It is much more free-form, but should reasonably support a significant result or characteristic about the problem that you want to discuss. Questions to ask yourself when writing this section:
