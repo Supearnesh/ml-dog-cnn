@@ -149,9 +149,6 @@ In the CNN that will be built from scratch, the five convolutional layers will a
 In the CNN built using transfer learning, [a pre-trained VGG-19 model](https://pytorch.org/docs/master/torchvision/models.html) will be used to get much better results than the CNN trained from scratch. Transfer learning involves taking a pre-trained model and using its learnings to get better outcomes for a closely related problem. For instance, a model used to identify images of stop signs could benefit from the learnings of a model trained to identify other street signs. After reading the research paper and looking at the results of the VGG-19 implementation, it seems like a good fit for this project.
 
 
-![VGG-19 CNN Architecture](https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/img/vgg19_architecture.jpg)
-
-
 
 
 ### Benchmark
@@ -231,7 +228,7 @@ There were several iterations on the CNN in this project, specifically in terms 
 The final CNN trained using transfer learning performed at a satisfactory level, correctly classifying 60% of the 836 unseen images in the test dataset. This corresponds to a precision of 60% and a recall of 60%. Since this is a multi-class classification problem, every incorrect classification performed by the model is categorized as both a `False Positive (FP)` and a `False Negative (FN)`. The calculations for precision and recall are included below to illustrate why they are equivalent in this scenario.
 
 
-![CNN Schema](https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/img/precision_recall_calc.png)
+![Precision and Recall](https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/img/precision_recall_calc.png)
 
 
 While this performance of the model is not particularly extraordinary, it is sufficient for the purposes of this project. While the model is adequate for it's purposes, it can be improved by spending more time to perform some additional tuning that is documented earlier in the report. The results from this evaluation can be trusted as the data used for evaluation is data that was unseen by the model during testing. The final model was also thoroughly evaluated on how well the model generalizes to unseen data during training, since a validation set was being used at every training epoch to determine how well the model was performing.
@@ -242,13 +239,7 @@ While this performance of the model is not particularly extraordinary, it is suf
 ### Justification
 
 
-
-
-
-In this section, your model’s final solution and its results should be compared to the benchmark you established earlier in the project using some type of statistical analysis. You should also justify whether these results and the solution are significant enough to have solved the problem posed in the project. Questions to ask yourself when writing this section:
-- _Are the final results found stronger than the benchmark result reported earlier?_
-- _Have you thoroughly analyzed and discussed the final solution?_
-- _Is the final solution significant enough to have solved the problem?_
+The model's final performance of 60% accuracy on the training set is definitively stronger than the benchmark of 40% that was set earlier in the project. The final solution is sufficient to solve the problem posed in the project but at the very bare minimum. Ideally, the final solution would have outperformed the minimum threshold by a significant margin and that would have justified this endeavor moreso. Overall, the final solution solves the problem at a passable mark.
 
 
 
@@ -262,16 +253,18 @@ _(approx. 1-2 pages)_
 ### Free-form Visualization
 
 
-In this section, you will need to provide some form of visualization that emphasizes an important quality about the project. It is much more free-form, but should reasonably support a significant result or characteristic about the problem that you want to discuss. Questions to ask yourself when writing this section:
-- _Have you visualized a relevant or important quality about the problem, dataset, input data, or results?_
-- _Is the visualization thoroughly analyzed and discussed?_
-- _If a plot is provided, are the axes, title, and datum clearly defined?_
+![VGG-19 CNN Architecture](https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/img/vgg19_architecture.jpg)
+
+
+Above is one example of an architecture of a CNN. There were several images like this that were encountered while reading several research papers, trying to learn more about the functions of different layers and how they can be adjusted to improve the results of the model. This CNN architecture, in particular, is of the VGG-19 model. The five convolutional layers have max-pooling applied at every layer, compared to the model described in the AlexNet paper, which applies max-pooling for just the first two of five convolutional layers (as well as the fifth convolutional layer). Also, the VGG-19 architecture shows three fully connected layers, whereas the previous CNN built from scratch contained only two. This was another interesting deviation from the AlexNet model as well.
 
 
 
 
 ### Reflection
 
+
+The end-to-end solution was challenging to complete. Specifically difficult was building a CNN architecture from scratch. This was also the portion of the project that taught the 
 
 In this section, you will summarize the entire end-to-end problem solution and discuss one or two particular aspects of the project you found interesting or difficult. You are expected to reflect on the project as a whole to show that you have a firm understanding of the entire process employed in your work. Questions to ask yourself when writing this section:
 - _Have you thoroughly summarized the entire process you used for this project?_
