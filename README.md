@@ -1,68 +1,152 @@
-[//]: # (Image References)
-
-[image1]: ./img/sample_dog_output.png "Sample Output"
-[image2]: ./img/vgg16_model.png "VGG-16 Model Layers"
-[image3]: ./img/vgg16_model_draw.png "VGG16 Model Figure"
-
-
-## Project Overview
-
-Welcome to the Convolutional Neural Networks (CNN) project in the AI Nanodegree! In this project, you will learn how to build a pipeline that can be used within a web or mobile app to process real-world, user-supplied images.  Given an image of a dog, your algorithm will identify an estimate of the canine’s breed.  If supplied an image of a human, the code will identify the resembling dog breed.  
-
-![Sample Output][image1]
-
-Along with exploring state-of-the-art CNN models for classification and localization, you will make important design decisions about the user experience for your app.  Our goal is that by completing this lab, you understand the challenges involved in piecing together a series of models designed to perform various tasks in a data processing pipeline.  Each model has its strengths and weaknesses, and engineering a real-world application often involves solving many problems without a perfect answer.  Your imperfect solution will nonetheless create a fun user experience!
-
-
-## Project Instructions
-
-### Instructions
-
-1. Clone the repository and navigate to the downloaded folder.
-	
-	```	
-		git clone https://github.com/udacity/deep-learning-v2-pytorch.git
-		cd deep-learning-v2-pytorch/project-dog-classification
-	```
-	
-__NOTE:__ if you are using the Udacity workspace, you *DO NOT* need to re-download the datasets in steps 2 and 3 - they can be found in the `/data` folder as noted within the workspace Jupyter notebook.
-
-2. Download the [dog dataset](https://s3-us-west-1.amazonaws.com/udacity-aind/dog-project/dogImages.zip).  Unzip the folder and place it in the repo, at location `path/to/dog-project/dogImages`.  The `dogImages/` folder should contain 133 folders, each corresponding to a different dog breed.
-3. Download the [human dataset](http://vis-www.cs.umass.edu/lfw/lfw.tgz).  Unzip the folder and place it in the repo, at location `path/to/dog-project/lfw`.  If you are using a Windows machine, you are encouraged to use [7zip](http://www.7-zip.org/) to extract the folder. 
-4. Make sure you have already installed the necessary Python packages according to the README in the program repository.
-5. Open a terminal window and navigate to the project folder. Open the notebook and follow the instructions.
-	
-	```
-		jupyter notebook dog_app.ipynb
-	```
-
-__NOTE:__ While some code has already been implemented to get you started, you will need to implement additional functionality to successfully answer all of the questions included in the notebook. __Unless requested, do not modify code that has already been included.__
-
-__NOTE:__ In the notebook, you will need to train CNNs in PyTorch.  If your CNN is taking too long to train, feel free to pursue one of the options under the section __Accelerating the Training Process__ below.
+# Classification of Dog Breeds using a Convolutional Neural Network (CNN)
 
 
 
-## (Optionally) Accelerating the Training Process 
 
-If your code is taking too long to run, you will need to either reduce the complexity of your chosen CNN architecture or switch to running your code on a GPU.  If you'd like to use a GPU, you can spin up an instance of your own:
-
-#### Amazon Web Services
-
-You can use Amazon Web Services to launch an EC2 GPU instance. (This costs money, but enrolled students should see a coupon code in their student `resources`.)
-
-## Evaluation
-
-Your project will be reviewed by a Udacity reviewer against the CNN project rubric.  Review this rubric thoroughly and self-evaluate your project before submission.  All criteria found in the rubric must meet specifications for you to pass.
+## Table Of Contents
 
 
-## Project Submission
+- [Introduction](#introduction)
+- [Setup Instructions](#setup-instructions)
+  * [Log in to the AWS console and create a notebook instance](#log-in-to-the-aws-console-and-create-a-notebook-instance)
+  * [Use git to clone the repository into the notebook instance](#use-git-to-clone-the-repository-into-the-notebook-instance)
+- [Machine Learning Pipeline](#machine-learning-pipeline)
+  * [Step 1 - Importing the datasets](#step-1---importing-the-datasets)
+  * [Step 2 - Binary classification](#step-2---binary-classification)
+    + [Part A - Detecting humans](#part-a---detecting-humans)
+    + [Part B - Detecting dogs](#part-b---detecting-dogs)
+  * [Step 3 - Convolutional Neural Networks (CNNs)](#step-3---convolutional-neural-networks--cnns-)
+    + [Part A - Classifying dog breeds from scratch](#part-a---classifying-dog-breeds-from-scratch)
+    + [Part B - Classifying dog breeds using transfer learning](#part-b---classifying-dog-breeds-using-transfer-learning)
+  * [Step 4 - Pipeline implementation for images provided as input](#step-4---pipeline-implementation-for-images-provided-as-input)
+  * [Step 5 - Model performance testing](#step-5---model-performance-testing)
+- [Important - Deleting the endpoint](#important---deleting-the-endpoint)
 
-Your submission should consist of the github link to your repository.  Your repository should contain:
-- The `dog_app.ipynb` file with fully functional code, all code cells executed and displaying output, and all questions answered.
-- An HTML or PDF export of the project notebook with the name `report.html` or `report.pdf`.
 
-Please do __NOT__ include any of the project data sets provided in the `dogImages/` or `lfw/` folders.
 
-### Ready to submit your project?
 
-Click on the "Submit Project" button in the classroom and follow the instructions to submit!
+## Introduction
+
+
+Over the course of the last 30,000 years, humans have domesticated dogs and turned them into truly wonderful companions. Dogs are very diverse animals, showing considerable variation between different breeds. On an evening walk through a given neighborhood, one may encounter several dogs that bear no semblance to each other. Other breeds of dogs are so similar that it is difficult for the untrained eye to tell them apart. Included below are a few different images, see if it would be possible for the average person to determine the breed of these dogs.
+
+
+![It is not easy to distinguish between the Brittany (left) and the Welsh Springer Spaniel (right) due to similarities in the patterned fur around their eyes](https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/img/breed_similarity_01.png)
+
+
+![Another pair of dogs, the Curly-coated Retriever (left) and the American Water Spaniel (right), that are difficult to tell apart from the texture of their coats](https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/img/breed_similarity_02.png)
+
+
+It may take many weeks or months for a person to learn enough about the physical attributes and unique features of different dog breeds to effectively identify them with a high degree of confidence. It would be interesting to see if a machine learning model can be trained to accomplish the same task in a matter of a few hours. The goal of this project is to use a [Convolutional Neural Network (CNN)](https://en.wikipedia.org/wiki/Convolutional_neural_network) to train a dog breed classifier across 133 breeds of dogs, using the [`dogImages`](https://s3-us-west-1.amazonaws.com/udacity-aind/dog-project/dogImages.zip) dataset, which consists of 8,351 total images split into 133 different categories by dog breed. Everything for this project was done on Amazon Web Services (AWS) and their SageMaker platform as the goal of this project was to further familiarize myself with the AWS ecosystem.
+
+
+
+
+## Setup Instructions
+
+
+The notebook in this repository is intended to be executed using Amazon's SageMaker platform and the following is a brief set of instructions on setting up a managed notebook instance using SageMaker.
+
+
+### Log in to the AWS console and create a notebook instance
+
+
+Log in to the AWS console and go to the SageMaker dashboard. Click on 'Create notebook instance'. The notebook name can be anything and using ml.t2.medium is a good idea as it is covered under the free tier. To enable GPUs for this particular project, it is recommended to use a ml.p2.xlarge instance. Also it is advised to increase the memory allocation to 15-25GB and to create a [Lifecycle Configuration](https://docs.aws.amazon.com/sagemaker/latest/dg/notebook-lifecycle-config.html) for any required library dependencies. For the role, creating a new role works fine. Using the default options is also okay. Important to note that you need the notebook instance to have access to S3 resources, which it does by default. In particular, any S3 bucket or object with 'sagemaker' in the name is available to the notebook.
+
+
+
+
+### Use git to clone the repository into the notebook instance
+
+
+Once the instance has been started and is accessible, click on 'Open Jupyter' to get to the Jupyter notebook main page. To start, clone this repository into the notebook instance.
+
+
+Click on the 'new' dropdown menu and select 'terminal'. By default, the working directory of the terminal instance is the home directory, however, the Jupyter notebook hub's root directory is under 'SageMaker'. Enter the appropriate directory and clone the repository as follows.
+
+
+```
+cd SageMaker
+git clone https://github.com/Supearnesh/ml-dog-cnn.git
+exit
+```
+
+
+After you have finished, close the terminal window.
+
+
+
+
+## Machine Learning Pipeline
+
+
+This was the general outline followed for this SageMaker project:
+
+
+1. Importing the datasets
+2. Binary classification
+    * a. Detecting humans
+    * b. Detecting dogs
+3. Convolutional Neural Networks (CNNs)
+    * a. Classifying dog breeds from scratch
+    * b. Classifying dog breeds using transfer learning
+4. Algorithm implementation for images provided as input
+5. Model performance testing
+
+
+
+
+### Step 1 - Importing the datasets
+
+
+
+
+### Step 2 - Binary classification
+
+
+
+
+#### Part A - Detecting humans
+
+
+
+
+#### Part B - Detecting dogs
+
+
+
+
+### Step 3 - Convolutional Neural Networks (CNNs)
+
+
+
+
+#### Part A - Classifying dog breeds from scratch
+
+
+
+
+#### Part B - Classifying dog breeds using transfer learning
+
+
+
+
+### Step 4 - Pipeline implementation for images provided as input
+
+
+
+
+### Step 5 - Model performance testing
+
+
+
+
+## Important - Deleting the endpoint
+
+
+Always remember to shut down the model endpoint if it is no longer being used. AWS charges for the duration that an endpoint is left running, so if it is left on then there could be an unexpectedly large AWS bill.
+
+
+```python
+predictor.delete_endpoint()
+```

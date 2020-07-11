@@ -101,10 +101,10 @@ The machine learning pipeline will include:
 2. Binary classification
     * a. Detecting humans
     * b. Detecting dogs
-3. Convolutional Neural Network (CNN)
+3. Convolutional Neural Networks (CNNs)
     * a. Classifying dog breeds from scratch
     * b. Classifying dog breeds using transfer learning
-4. Algorithm implementation for images provided as input
+4. Pipeline implementation for images provided as input
 5. Model performance testing
 
 
