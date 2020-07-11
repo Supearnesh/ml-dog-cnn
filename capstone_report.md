@@ -109,24 +109,22 @@ As far as the image resolutions go, the data consists of varying sizes and dimen
 ### Exploratory Visualization
 
 
-When picking a model to use for transfer learning to build the CNN, it would be useful to know how effective the features of the original model are to tell dogs and humans apart. In the plots below, several different 
+When picking a model to use for transfer learning to build the CNN, it would be helpful if there was a measure to gauge the effectiveness of the model before going through training. One possible way to do this would to evaluate the models on their capability to distinguish between images of humans and dogs. In the plots below, four different models have been plotted against the training set data so the visual representation of the features used to detect dogs and humans can be understood.
 
 
-it will be important to understand the data distribution in the training, validation, and test sets across all 133 classes to ensure that there are no class imbalances that need to be taken into consideration. To that end, there are three plots below that show the distribution across all 133 classes for the `train`, `valid`, and `test` splits of the `dogImages` dataset.
+![VGG-19 Model](https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/img/transfer_learning_vgg19.png)
 
 
-![VGG-19 Model](https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/img/tranfer_learning_vgg19.png)
+![ResNet-50 Model](https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/img/transfer_learning_resnet50.png)
 
 
-![ResNet-50 Model](https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/img/tranfer_learning_resnet50.png)
+![Inception-V3 Model](https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/img/transfer_learning_inception_v3.png)
 
 
+![Xception Model](https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/img/transfer_learning_xception.png)
 
 
-In this section, you will need to provide some form of visualization that summarizes or extracts a relevant characteristic or feature about the data. The visualization should adequately support the data being used. Discuss why this visualization was chosen and how it is relevant. Questions to ask yourself when writing this section:
-- _Have you visualized a relevant characteristic or feature about the dataset or input data?_
-- _Is the visualization thoroughly analyzed and discussed?_
-- _If a plot is provided, are the axes, title, and datum clearly defined?_
+From looking at the graphs, the ResNet-50 model seems to have the most distinct separation between dog and human data points. Inception-V3 has a close but rigid line of separation, whereas Xception and VGG-19 seem to have more interspersed data points. It is worth investigating their underlying architectures and reading any relevant research papers to determine which model to go with, but this is an interesting exercise to get another perspective.
 
 
 
