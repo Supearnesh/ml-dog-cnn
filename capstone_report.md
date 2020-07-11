@@ -20,7 +20,7 @@ July 2020
 ### Project Overview
 
 
-Over the course of the last 30,000 years, humans have domesticated dogs and turned them into truly wonderful companions. Dogs are very diverse animals, showing considerable variation between different breeds. On an evening walk through a given neighborhood, one may encounter several dogs that bear no semblance to each other. Other breeds of dogs are so similar that it is difficult for the untrained eye to tell them apart. Included below are a few different images, see if it would be possible for the average person to determine the the breed of these dogs.
+Over the course of the last 30,000 years, humans have domesticated dogs and turned them into truly wonderful companions. Dogs are very diverse animals, showing considerable variation between different breeds. On an evening walk through a given neighborhood, one may encounter several dogs that bear no semblance to each other. Other breeds of dogs are so similar that it is difficult for the untrained eye to tell them apart. Included below are a few different images, see if it would be possible for the average person to determine the breed of these dogs.
 
 
 ![Labrador Retrievers are recognized as having three possible coat colors: yellow, chocolate and black](https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/img/breed_colors.png)
@@ -72,7 +72,7 @@ Accuracy is a decent measure for evaluation of machine learning models, but a fa
 ![Precision and Recall](https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/img/precision_recall.png)
 
 
-A further calculation can be made using precision and recall to yield the F1 score, a metric which can be used to effectively compare performance between different iterations of a model.
+A further calculation can be made using precision and recall, yielding the F1 score, a metric which can be used to effectively compare performance between different iterations of a model.
 
 
 ![F1 Score](https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/img/f1_score.png)
@@ -195,7 +195,7 @@ The machine learning pipeline will include:
 The `face_detector` function will leverage [OpenCV's implementation of Haar feature-based cascade classifiers](https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_objdetect/py_face_detection/py_face_detection.html) to detect human faces in images. The `dog_detector` function will utilize [a pre-trained VGG-16 model](https://pytorch.org/docs/master/torchvision/models.html) to detect dogs in images. The CNN will use transfer learning and extract bottleneck features from[a VGG-19 model](https://pytorch.org/docs/master/torchvision/models.html).
 
 
-To better describe the function of the CNN in this project, the illustration below shows an example of how CNNs handle image classification. The convolutional layers, set up with normalization and max-pooling layers, extract features from a provided input image. Those features are then used to perform non-linear transformations in the fully-connected layer and produce a classification result.
+To better describe the function of the CNN in this project, the illustration below shows an example of how CNNs handle image classification. The convolutional layers set up with normalization and max-pooling layers, extract features from a provided input image. Those features are then used to perform non-linear transformations in the fully connected layer and produce a classification result.
 
 
 ![CNN Schema](https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/img/cnn-schema.jpg)
@@ -204,7 +204,7 @@ To better describe the function of the CNN in this project, the illustration bel
 > Alex Krizhevsky, Ilya Sutskever, and Geoffrey Hinton. [ImageNet Classification with Deep Convolutional Neural Networks](https://www.cs.toronto.edu/~hinton/absps/imagenet.pdf). In _Proceedings of NIPS_, 2012.
 
 
-As mentioned in earlier sections, there were two CNNs built for this project. The one that led to issues in particular was the one built from scratch. This CNN contains five convolutional layers, all normalized and max-pooled, and two fully connected layers with dropout configured at 50% probability. This architecture was modeled after AlexNet. All layers use Rectified Linear Units (ReLUs) for their documented reduction in training times. Even after all of this, the trained model performed quite poorly with the validation loss function severely increasing as the training loss function decreased, a classic sign of bad overfitting. Ultimately, the model managed to identify less than 10% of dog breeds correctly from the test set. Despite several hours worth of work to combat the overfitting problem, such as trying many iterations of simpler architectures containing only three convolutional layers and increasing the dropout probability of the fully connected layers, the model's performance did not improve. Ultimately, this effort was abandoned in favor of the transfer learning method to create a more proficient model in a lesser amount of time.
+As mentioned in earlier sections, there were two CNNs built for this project. The one that led to issues in particular was the one built from scratch. This CNN contains five convolutional layers, all normalized and max-pooled, and two fully connected layers with dropout configured at 50% probability. This architecture was modeled after AlexNet. All layers use Rectified Linear Units (ReLUs) for their documented reduction in training times. Even after all of this, the trained model performed quite poorly with the validation loss function severely increasing as the training loss function decreased, a classic sign of bad overfitting. Ultimately, the model managed to identify less than 10% of dog breeds correctly from the test set. Despite several hours' worth of work to combat the overfitting problem, such as trying many iterations of simpler architectures containing only three convolutional layers and increasing the dropout probability of the fully connected layers, the model's performance did not improve. Ultimately, this effort was abandoned in favor of the transfer learning method to create a more proficient model in a lesser amount of time.
 
 
 
@@ -231,7 +231,7 @@ The final CNN trained using transfer learning performed at a satisfactory level,
 ![Precision and Recall](https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/img/precision_recall_calc.png)
 
 
-While this performance of the model is not particularly extraordinary, it is sufficient for the purposes of this project. While the model is adequate for it's purposes, it can be improved by spending more time to perform some additional tuning that is documented earlier in the report. The results from this evaluation can be trusted as the data used for evaluation is data that was unseen by the model during testing. The final model was also thoroughly evaluated on how well the model generalizes to unseen data during training, since a validation set was being used at every training epoch to determine how well the model was performing.
+While this performance of the model is not particularly extraordinary, it is sufficient for the purposes of this project. While the model is adequate for its purposes, it can be improved by spending more time to perform some additional tuning that is documented earlier in the report. The results from this evaluation can be trusted as the data used for evaluation is data that was unseen by the model during testing. The final model was also thoroughly evaluated on how well the model generalizes to unseen data during training, since a validation set was being used at every training epoch to determine how well the model was performing.
 
 
 
@@ -239,7 +239,7 @@ While this performance of the model is not particularly extraordinary, it is suf
 ### Justification
 
 
-The model's final performance of 60% accuracy on the training set is definitively stronger than the benchmark of 40% that was set earlier in the project. The final solution is sufficient to solve the problem posed in the project but at the very bare minimum. Ideally, the final solution would have outperformed the minimum threshold by a significant margin and that would have justified this endeavor moreso. Overall, the final solution solves the problem at a passable mark.
+The model's final performance of 60% accuracy on the training set is definitively stronger than the benchmark of 40% that was set earlier in the project. The final solution is sufficient to solve the problem posed in the project but at the very bare minimum. Ideally, the final solution would have outperformed the minimum threshold by a significant margin. Overall, the final solution solves the problem at a passable mark.
 
 
 
@@ -263,7 +263,7 @@ Above is one example of an architecture of a CNN. There were several images like
 ### Reflection
 
 
-The end-to-end solution was challenging to complete, specifically difficult was the task to build a CNN architecture from scratch. This was also the most interesting portion of the project and required a firm understanding of CNNs to complete successfully. This part of the project was, in a sense, designed to fail as the bar to pass was set very low at 10%. Employing multiple methods to reduce overfitting was necessary, and even then the results were not promising. In general, using a less complex CNN, with fewer layers, is less likely to overfit, and dropout layers may increase training time but will lead to the model being less reliant on the same features to make a decision and will decrease overfitting. The final model's performance was quite underwhelming, the expectations were for the model to perform much better than it did, but it was a great introduction to CNNs and they are definitely wonderful tools to use for image classification problems. Ultimately, the most valuable lesson this project imparted was on how to find relevant research papers, explore the architectures of the solutions being used to solve those problems, and understand how those solutions are applicable to the task on hand.
+The end-to-end solution was challenging to complete, specifically difficult was the task to build a CNN architecture from scratch. This was also the most interesting portion of the project and required a firm understanding of CNNs to complete successfully. This part of the project was, in a sense, designed to fail as the bar to pass was set very low at 10%. Employing multiple methods to reduce overfitting was necessary, and even then the results were not promising. In general, using a less complex CNN, with fewer layers, is less likely to overfit, and dropout layers may increase training time but will lead to the model being less reliant on the same features to produce a result and will decrease overfitting. The final model's performance was quite underwhelming, the expectations were for the model to perform much better than it did, but it was a great introduction to CNNs, and they are definitely wonderful tools to use for image classification problems. Ultimately, the most valuable lesson this project imparted was on how to find relevant research papers, explore the architectures of the solutions being used to solve those problems, and understand how those solutions are applicable to the task on hand.
 
 
 
