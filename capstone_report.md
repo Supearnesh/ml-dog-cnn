@@ -147,20 +147,10 @@ In the CNN that will be built from scratch, the five convolutional layers will a
 > Vinod Nair and Geoffrey Hinton. [Rectified Linear Units Improve Restricted Boltzmann Machines](https://www.cs.toronto.edu/~fritz/absps/reluICML.pdf). In _Proceedings of ICML_, 2010.
 
 
-In the CNN built using transfer learning, [a pre-trained VGG-19 model](https://pytorch.org/docs/master/torchvision/models.html) will be used to get much better results than the CNN trained from scratch. Transfer learning involves taking a pre-trained model and using its learnings to get better outcomes for a closely related problem. For instance, a model used to identify images of stop signs could benefit from the learnings of a model trained to identify other street signs. After reading the research paper and looking at the results of the VGG-19 implementation, it seems like a good fit for this problem.
+In the CNN built using transfer learning, [a pre-trained VGG-19 model](https://pytorch.org/docs/master/torchvision/models.html) will be used to get much better results than the CNN trained from scratch. Transfer learning involves taking a pre-trained model and using its learnings to get better outcomes for a closely related problem. For instance, a model used to identify images of stop signs could benefit from the learnings of a model trained to identify other street signs. After reading the research paper and looking at the results of the VGG-19 implementation, it seems like a good fit for this project.
 
 
 ![VGG-19 CNN Architecture](https://raw.githubusercontent.com/Supearnesh/ml-dog-cnn/master/img/vgg19_architecture.jpg)
-
-
-
-
-
-
-In this section, you will need to discuss the algorithms and techniques you intend to use for solving the problem. You should justify the use of each one based on the characteristics of the problem and the problem domain. Questions to ask yourself when writing this section:
-- _Are the algorithms you will use, including any default variables/parameters in the project clearly defined?_
-- _Are the techniques to be used thoroughly discussed and justified?_
-- _Is it made clear how the input data or datasets will be handled by the algorithms and techniques chosen?_
 
 
 
