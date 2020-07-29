@@ -1,4 +1,4 @@
-# Classification of Dog Breeds using a Convolutional Neural Network (CNN)
+# Classification of Dog Breeds using a Convolutional Neural Network
 
 
 
