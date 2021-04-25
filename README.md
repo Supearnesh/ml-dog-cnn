@@ -15,7 +15,7 @@
   * [Step 2 - Binary classification](#step-2---binary-classification)
     + [Part A - Detecting humans](#part-a---detecting-humans)
     + [Part B - Detecting dogs](#part-b---detecting-dogs)
-  * [Step 3 - Convolutional Neural Networks (CNNs)](#step-3---convolutional-neural-networks--cnns-)
+  * [Step 3 - Convolutional Neural Networks (CNNs)](#step-3---convolutional-neural-networks-cnns)
     + [Part A - Classifying dog breeds from scratch](#part-a---classifying-dog-breeds-from-scratch)
     + [Part B - Classifying dog breeds using transfer learning](#part-b---classifying-dog-breeds-using-transfer-learning)
   * [Step 4 - Pipeline implementation for images provided as input](#step-4---pipeline-implementation-for-images-provided-as-input)
